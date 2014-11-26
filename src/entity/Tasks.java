@@ -77,11 +77,9 @@ public class Tasks implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-   
     @ManyToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name="project_id")
     private Projects project;
-    
     
     public Tasks() {
     }
@@ -166,7 +164,7 @@ public class Tasks implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
+
     public void setProject(Projects proj) {
         project = proj;
     }
@@ -174,7 +172,6 @@ public class Tasks implements Serializable {
     public Projects getDepartment() {
         return project;
     }
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -197,9 +194,9 @@ public class Tasks implements Serializable {
 
     @Override
     public String toString() {
-        return "controller.Tasks[ id=" + id + " ]";
+        return "entity.Tasks[ id=" + id + " ]";
     }
-    
+ 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
         EntityManager manager = emf.createEntityManager();
@@ -215,7 +212,7 @@ public class Tasks implements Serializable {
         Set<Tasks> tasks = new HashSet<Tasks>();
         tasks.add(task1);
         tasks.add(task2);
-        tasks.add(task2);
+        tasks.add(task3);
 
         Projects project1 = new Projects();
         project1.setId(1);
@@ -232,5 +229,6 @@ public class Tasks implements Serializable {
         manager.persist(task2);
         manager.persist(task3);
         transaction.commit();
+        emf.close();
     }
 }

@@ -7,11 +7,15 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +23,7 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,9 +65,9 @@ public class Projects implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="projects")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="project")
     private Set<Tasks> tasks;
-        
+    
     public Projects() {
     }
 
@@ -122,7 +127,8 @@ public class Projects implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-
+    
+    
     public Set<Tasks> getTasks() {
         return tasks;
    }
@@ -131,7 +137,7 @@ public class Projects implements Serializable {
    public void setRecords(Set<Tasks> tasks) {
        this.tasks = tasks;
    }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -154,10 +160,8 @@ public class Projects implements Serializable {
 
     @Override
     public String toString() {
-        return "controller.Projects[ id=" + id + " ]";
+        return "entity.Projects[ id=" + id + " ]";
     }
     
-    public static void main(String[] args) {
-        
-    }
+    
 }

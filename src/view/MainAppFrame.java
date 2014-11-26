@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package view;
+import entity.Tasks;
 import javax.swing.JPanel;
 
 /**
@@ -80,6 +81,8 @@ public class MainAppFrame extends javax.swing.JFrame {
                 new MainAppFrame().setVisible(true);
             }
         });
+        
+        Tasks.main(args);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

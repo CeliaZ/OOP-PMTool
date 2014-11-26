@@ -140,7 +140,7 @@ public class ProjectsUsers implements Serializable {
 
     @Override
     public String toString() {
-        return "controller.ProjectsUsers[ id=" + id + " ]";
+        return "entity.ProjectsUsers[ id=" + id + " ]";
     }
     
 }
