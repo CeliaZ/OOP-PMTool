@@ -18,7 +18,8 @@ public class MainAppFrame extends javax.swing.JFrame {
      */
     public MainAppFrame() {
         initComponents();
-        JPanel panel = new ProjectMainPanel();
+//        JPanel panel = new ProjectMainPanel();
+        JPanel panel = new CreateTasksPanel();
         panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
         this.add(panel);
     }
@@ -42,7 +43,7 @@ public class MainAppFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGap(0, 1718, Short.MAX_VALUE)
         );
 
         pack();
@@ -82,7 +83,7 @@ public class MainAppFrame extends javax.swing.JFrame {
             }
         });
         
-        Tasks.main(args);
+        //Tasks.main(args);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
