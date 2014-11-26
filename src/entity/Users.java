@@ -179,7 +179,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "controller.Users[ id=" + id + " ]";
+        return "entity.Users[ id=" + id + " ]";
     }
     
 }

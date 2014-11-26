@@ -144,7 +144,7 @@ public class Messages implements Serializable {
 
     @Override
     public String toString() {
-        return "controller.Messages[ id=" + id + " ]";
+        return "entity.Messages[ id=" + id + " ]";
     }
     
 }
