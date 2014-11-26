@@ -88,11 +88,17 @@ public class Tasks implements Serializable {
         this.id = id;
     }
 
+    public Tasks(String taskName, String description, Integer owner) {
+        this.taskName = taskName;
+        this.description = description;
+        this.ownerId = owner;
+    }
+    
     public Tasks(Integer id, int projectId) {
         this.id = id;
         this.projectId = projectId;
     }
-
+    
     public Integer getId() {
         return id;
     }
@@ -197,38 +203,38 @@ public class Tasks implements Serializable {
         return "entity.Tasks[ id=" + id + " ]";
     }
  
-    public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
-        EntityManager manager = emf.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-
-        Tasks task1 = new Tasks(1,1);
-        Tasks task2 = new Tasks(2,1);
-        Tasks task3 = new Tasks(3,1);
-
-
-        // create a set of the records
-
-        Set<Tasks> tasks = new HashSet<Tasks>();
-        tasks.add(task1);
-        tasks.add(task2);
-        tasks.add(task3);
-
-        Projects project1 = new Projects();
-        project1.setId(1);
-        project1.setProjectName("Project1");
-        
-        // suppose that student1 and student2  are in department1
-        project1.setRecords(tasks);
-        task1.setProject(project1);
-        task2.setProject(project1);
-        task3.setProject(project1);
-
-        transaction.begin();
-        manager.persist(task1);
-        manager.persist(task2);
-        manager.persist(task3);
-        transaction.commit();
-        emf.close();
-    }
+//    public static void main(String[] args) {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
+//        EntityManager manager = emf.createEntityManager();
+//        EntityTransaction transaction = manager.getTransaction();
+//
+//        Tasks task1 = new Tasks(1,1);
+//        Tasks task2 = new Tasks(2,1);
+//        Tasks task3 = new Tasks(3,1);
+//
+//
+//        // create a set of the records
+//
+//        Set<Tasks> tasks = new HashSet<Tasks>();
+//        tasks.add(task1);
+//        tasks.add(task2);
+//        tasks.add(task3);
+//
+//        Projects project1 = new Projects();
+//        project1.setId(1);
+//        project1.setProjectName("Project1");
+//        
+//        // suppose that student1 and student2  are in department1
+//        project1.setRecords(tasks);
+//        task1.setProject(project1);
+//        task2.setProject(project1);
+//        task3.setProject(project1);
+//
+//        transaction.begin();
+//        manager.persist(task1);
+//        manager.persist(task2);
+//        manager.persist(task3);
+//        transaction.commit();
+//        emf.close();
+//    }
 }
