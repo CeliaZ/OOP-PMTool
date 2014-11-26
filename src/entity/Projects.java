@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,6 +60,9 @@ public class Projects implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="projects")
+    private Set<Tasks> tasks;
+        
     public Projects() {
     }
 
@@ -117,6 +123,15 @@ public class Projects implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public Set<Tasks> getTasks() {
+        return tasks;
+   }
+
+   
+   public void setRecords(Set<Tasks> tasks) {
+       this.tasks = tasks;
+   }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -142,4 +157,7 @@ public class Projects implements Serializable {
         return "controller.Projects[ id=" + id + " ]";
     }
     
+    public static void main(String[] args) {
+        
+    }
 }

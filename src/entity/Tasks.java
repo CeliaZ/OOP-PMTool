@@ -7,15 +7,24 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Persistence;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -68,6 +77,12 @@ public class Tasks implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+   
+    @ManyToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name="project_id")
+    private Projects project;
+    
+    
     public Tasks() {
     }
 
@@ -151,7 +166,15 @@ public class Tasks implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+    public void setProject(Projects proj) {
+        project = proj;
+    }
 
+    public Projects getDepartment() {
+        return project;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -177,4 +200,37 @@ public class Tasks implements Serializable {
         return "controller.Tasks[ id=" + id + " ]";
     }
     
+    public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
+        EntityManager manager = emf.createEntityManager();
+        EntityTransaction transaction = manager.getTransaction();
+
+        Tasks task1 = new Tasks(1,1);
+        Tasks task2 = new Tasks(2,1);
+        Tasks task3 = new Tasks(3,1);
+
+
+        // create a set of the records
+
+        Set<Tasks> tasks = new HashSet<Tasks>();
+        tasks.add(task1);
+        tasks.add(task2);
+        tasks.add(task2);
+
+        Projects project1 = new Projects();
+        project1.setId(1);
+        project1.setProjectName("Project1");
+        
+        // suppose that student1 and student2  are in department1
+        project1.setRecords(tasks);
+        task1.setProject(project1);
+        task2.setProject(project1);
+        task3.setProject(project1);
+
+        transaction.begin();
+        manager.persist(task1);
+        manager.persist(task2);
+        manager.persist(task3);
+        transaction.commit();
+    }
 }
