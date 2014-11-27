@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import services.Application;
 
 /**
  *
@@ -236,8 +237,8 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         array[3] = jTextField2.getText();
         
         //tasksController.addRow(array);
-        DataManager.init();
-        EntityTransaction transaction = DataManager.getEnitityManager().getTransaction();
+        Application.init();
+        EntityTransaction transaction = Application.getEnitityManager().getTransaction();
         
         Tasks task = new Tasks(array[0], array[1], Integer.valueOf((String) array[2]).intValue());
         Set<Tasks> tasks = new HashSet<Tasks>();
@@ -250,9 +251,12 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         project1.setRecords(tasks);
         task.setProject(project1);
         transaction.begin();
-        DataManager.getEnitityManager().persist(task);
+        Application.getEnitityManager().persist(task);
         transaction.commit();
         //emf.close();
+        
+//        remove(firstPanel);
+//        add(secondPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
@@ -283,15 +287,15 @@ public class CreateTasksPanel extends javax.swing.JPanel {
 }
 
 
-class DataManager {
-    private static EntityManager entityManager;
-    
-    public static void init() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
-        entityManager = emf.createEntityManager();
-    }
-    
-    public static EntityManager getEnitityManager() {
-        return entityManager;
-    }
-}
+//class DataManager {
+//    private static EntityManager entityManager;
+//    
+//    public static void init() {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
+//        entityManager = emf.createEntityManager();
+//    }
+//    
+//    public static EntityManager getEnitityManager() {
+//        return entityManager;
+//    }
+//}
