@@ -13,8 +13,6 @@ import javax.swing.JPanel;
  */
 public class ProjectMainPanel extends javax.swing.JPanel {
 
-    
-    
     /**
      * Creates new form ProjectMainPanel
      */
