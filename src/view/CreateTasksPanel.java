@@ -8,12 +8,16 @@ package view;
 import controller.TasksController;
 import entity.Projects;
 import entity.Tasks;
+import java.awt.Button;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import services.Application;
 
 /**
@@ -237,7 +241,6 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         array[3] = jTextField2.getText();
         
         //tasksController.addRow(array);
-        Application.init();
         EntityTransaction transaction = Application.getEnitityManager().getTransaction();
         
         Tasks task = new Tasks(array[0], array[1], Integer.valueOf((String) array[2]).intValue());
@@ -254,6 +257,13 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         Application.getEnitityManager().persist(task);
         transaction.commit();
         //emf.close();
+        MainAppFrame jf = Application.getMainFrame();
+        //jf.remove((JPanel)((JButton)evt.getComponent()).getParent().getComponent()));
+        JPanel newP = new JPanel();
+        newP.setSize(1000, 100);
+        newP.add(new Button("test panel"));
+        newP.setVisible(true);
+        jf.switchPanel(newP);
         
 //        remove(firstPanel);
 //        add(secondPanel);

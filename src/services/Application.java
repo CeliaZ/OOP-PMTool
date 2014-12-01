@@ -5,26 +5,41 @@
  */
 package services;
 
+import java.awt.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import view.MainAppFrame;
 
 /**
  *
  * @author Cherry
  */
 public class Application {
-    private JFrame mainFrame;
+    private static MainAppFrame mainFrame;
+    private static JPanel panel;
     private static EntityManager entityManager;
     
-    public JFrame getMainFrame () {
+    public static MainAppFrame getMainFrame () {      
         return mainFrame;
     }
     
-    public static void init() {
+//    public static JPanel getPanel () {
+//        for (Component component : mainFrame.getComponents())
+//            if (component.isVisible()) {
+//                 panel = (JPanel) component;
+//                 break;
+//            }   
+//        //mainFrame.getComponents()[0];
+//        return panel;
+//    }
+    
+    public static void init(MainAppFrame frame) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
         entityManager = emf.createEntityManager();
+        mainFrame = frame;
     }
     
     public static EntityManager getEnitityManager() {

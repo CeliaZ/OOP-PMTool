@@ -5,13 +5,15 @@
  */
 package view;
 import entity.Tasks;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import services.Application;
 
 /**
  *
  * @author Cherry
  */
-public class MainAppFrame extends javax.swing.JFrame {
+public class MainAppFrame extends JFrame {
 
     /**
      * Creates new form MainAppFrame
@@ -19,15 +21,27 @@ public class MainAppFrame extends javax.swing.JFrame {
     // Tanmay is testing push 
     // tanmay is testing push again
     // cherry!!!
-
-    public MainAppFrame() {
+    private JPanel panel = new JPanel();
+    //private JFrame mainFrame = new JFrame();
+    
+    public MainAppFrame(JPanel differentPanel) {
         initComponents();
 //       JPanel panel = new ProjectMainPanel();
-       JPanel panel = new CreateTasksPanel();
+//       JPanel panel = new CreateTasksPanel();
+        this.panel = differentPanel;
         panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
         this.add(panel);
+        Application.init(this);
     }
 
+    public void switchPanel(JPanel newPanel) {
+        this.remove(panel);
+        this.add(newPanel);
+        this.panel = newPanel;
+        this.revalidate();
+        this.repaint();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,11 +93,11 @@ public class MainAppFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainAppFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        JPanel panel = new CreateTasksPanel();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainAppFrame().setVisible(true);
+                new MainAppFrame(panel).setVisible(true);
             }
         });
         
