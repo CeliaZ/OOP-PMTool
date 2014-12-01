@@ -25,7 +25,7 @@ import services.Application;
  * @author Cherry
  */
 public class CreateTasksPanel extends javax.swing.JPanel {
-    private TasksController tasksController;
+    //private TasksController tasksController;
     /**
      * Creates new form CreateTasksPanel
      */
@@ -225,22 +225,13 @@ public class CreateTasksPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-//        String[] array = new String[jtable1.getColumnCount()];
-//        array[0] = uidTextField.getText();
-//    	array[1] = firstNameTextField.getText();
-//    	array[2] = lastNameTextField.getText();
-//    	array[3] = passwordTextField.getText();
-//    	array[4] = emailTextField.getText();
-//    	
-//   	userTableController.addRow( array);
+
         String[] array = new String[4];
         array[0] = jTextField1.getText();
         array[1] = jTextArea1.getText();
         array[2] = jTextField2.getText();
         array[3] = jTextField2.getText();
         
-        //tasksController.addRow(array);
         EntityTransaction transaction = Application.getEnitityManager().getTransaction();
         
         Tasks task = new Tasks(array[0], array[1], Integer.valueOf((String) array[2]).intValue());
@@ -250,7 +241,6 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         project1.setId(2);
         project1.setProjectName("ProjectTestCreateTask");
         
-        // suppose that student1 and student2  are in department1
         project1.setRecords(tasks);
         task.setProject(project1);
         transaction.begin();
@@ -258,10 +248,9 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         transaction.commit();
         //emf.close();
         MainAppFrame jf = Application.getMainFrame();
-        //jf.remove((JPanel)((JButton)evt.getComponent()).getParent().getComponent()));
-        JPanel newP = new JPanel();
-        newP.setSize(1000, 100);
-        newP.add(new Button("test panel"));
+        JPanel newP = new ProjectTaskPanel();
+        newP.setSize(1000, 1000);
+        //newP.add(new Button("test panel"));
         newP.setVisible(true);
         jf.switchPanel(newP);
         

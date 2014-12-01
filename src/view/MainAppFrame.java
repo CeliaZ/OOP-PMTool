@@ -93,7 +93,8 @@ public class MainAppFrame extends JFrame {
             java.util.logging.Logger.getLogger(MainAppFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        JPanel panel = new CreateTasksPanel();
+        //JPanel panel = new CreateTasksPanel();
+        JPanel panel = new ProjectTaskPanel();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
