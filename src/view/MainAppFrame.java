@@ -26,8 +26,9 @@ public class MainAppFrame extends JFrame {
     
     public MainAppFrame(JPanel differentPanel) {
         initComponents();
+//        System.out.println("main init");   
 //       JPanel panel = new ProjectMainPanel();
-//       JPanel panel = new CreateTasksPanel();
+//       JPanel panel = new CreateTasksPanel(); 
         this.panel = differentPanel;
         panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
         this.add(panel);
@@ -94,7 +95,9 @@ public class MainAppFrame extends JFrame {
         }
         //</editor-fold>
         //JPanel panel = new CreateTasksPanel();
-        JPanel panel = new ProjectTaskPanel();
+        Application.init();
+        //JPanel panel = new ProjectTaskPanel();
+        JPanel panel = new ProjectMainPanel();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -107,4 +110,5 @@ public class MainAppFrame extends JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
 }

@@ -5,9 +5,20 @@
  */
 package view;
 
+import entity.Projects;
+import entity.Tasks;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.ScrollPane;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,12 +45,38 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
     //get data from db and show on table;
         String colNames[] = {"Task ID", "Task Name", "Task Owner", "Due day", "Updated Time"};
         //String[][] data = new String[4][4];
-        String [][] data= new String[][]{
-            {"1","Task1", "cherry","Dec 2014", "Nov 30"},
-            {"2", "Task1", "cherry","Dec 2014", "Nov 30"},
-            {"3", "Task1", "cherry","Dec 2014", "Nov 30"},
-            {"4", "Task1", "cherry","Dec 2014", "Nov 30"}
-        };
+        
+        // fetch data from db tasks
+        //Tasks tasks = new Tasks(1);
+        EntityManager em = Application.getEnitityManager();
+        System.out.println(em);
+        em.getTransaction().begin();
+        //TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
+        TypedQuery<Projects> queryProById = em.createQuery("SELECT p FROM Projects p", Projects.class);
+        //Query queryProById = em.createNamedQuery("findById");
+        Integer proId = 1;
+//        Projects pro = queryProById.setParameter("id", proId).getResultList().get(0);
+        Projects pro = queryProById.getResultList().get(0);
+        Set<Tasks> tasks = pro.getTasks();
+        int size = tasks.size();
+        String [][] data= new String[size][5];
+        int count = 0;
+        for(Tasks task: tasks) {
+            data[count][0] = Integer.toString(count - 1);
+            data[count][1] = task.getTaskName();
+            data[count][2] = "1";
+            data[count][3] = "ddd";
+            data[count][4] = "ddc";
+            count++;
+        }
+        
+        
+//        String [][] data= new String[][]{
+//            {"1","Task1", "cherry","Dec 2014", "Nov 30"},
+//            {"2", "Task1", "cherry","Dec 2014", "Nov 30"},
+//            {"3", "Task1", "cherry","Dec 2014", "Nov 30"},
+//            {"4", "Task1", "cherry","Dec 2014", "Nov 30"}
+//        };
         taskList = new JTable(data, colNames);
         showTable();
     }

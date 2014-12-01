@@ -35,11 +35,14 @@ public class Application {
 //        //mainFrame.getComponents()[0];
 //        return panel;
 //    }
-    
-    public static void init(MainAppFrame frame) {
+    public static void init(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
         entityManager = emf.createEntityManager();
+    }
+    
+    public static void init(MainAppFrame frame) { 
         mainFrame = frame;
+//        System.out.println("app init");
     }
     
     public static EntityManager getEnitityManager() {
