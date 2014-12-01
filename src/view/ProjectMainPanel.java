@@ -6,6 +6,7 @@
 package view;
 
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -26,6 +27,9 @@ public class ProjectMainPanel extends javax.swing.JPanel {
         jTabbedPane1.addTab("Tasks", panelTask);
     }
 
+    public JTabbedPane getJTabbedPane() {
+        return jTabbedPane1;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

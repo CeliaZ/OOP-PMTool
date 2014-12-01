@@ -35,6 +35,10 @@ public class MainAppFrame extends JFrame {
         Application.init(this);
     }
 
+    public JPanel getCurrentPanel() {
+        return panel;
+    }
+    
     public void switchPanel(JPanel newPanel) {
         this.remove(panel);
         this.add(newPanel);

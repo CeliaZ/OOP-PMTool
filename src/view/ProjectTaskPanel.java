@@ -49,22 +49,23 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         // fetch data from db tasks
         //Tasks tasks = new Tasks(1);
         EntityManager em = Application.getEnitityManager();
-        System.out.println(em);
-        em.getTransaction().begin();
+//        System.out.println(em);
         //TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
-        TypedQuery<Projects> queryProById = em.createQuery("SELECT p FROM Projects p", Projects.class);
+        TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
         //Query queryProById = em.createNamedQuery("findById");
-        Integer proId = 1;
-//        Projects pro = queryProById.setParameter("id", proId).getResultList().get(0);
-        Projects pro = queryProById.getResultList().get(0);
+        Integer proId = 40;
+        Projects pro = queryProById.setParameter("id", proId).getSingleResult();
+
+//        Projects pro = queryProById.getResultList().get(0);
         Set<Tasks> tasks = pro.getTasks();
         int size = tasks.size();
+        System.out.println(size);
         String [][] data= new String[size][5];
         int count = 0;
         for(Tasks task: tasks) {
-            data[count][0] = Integer.toString(count - 1);
+            data[count][0] = Integer.toString(count + 1);
             data[count][1] = task.getTaskName();
-            data[count][2] = "1";
+            data[count][2] = task.getOwnerId().toString();
             data[count][3] = "ddd";
             data[count][4] = "ddc";
             count++;

@@ -15,9 +15,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import services.Application;
 
 /**
@@ -233,14 +235,24 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         array[3] = jTextField2.getText();
         
         EntityTransaction transaction = Application.getEnitityManager().getTransaction();
+
+        EntityManager em = Application.getEnitityManager();
+//        System.out.println(em);
+        //TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
+        TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
+        //Query queryProById = em.createNamedQuery("findById");
+        Integer proId = 40;
+        Projects project1 = queryProById.setParameter("id", proId).getSingleResult();
+        
+        
+        // get project id
+        //int proId = project1.getId();
         
         Tasks task = new Tasks(array[0], array[1], Integer.valueOf((String) array[2]).intValue());
+        task.setProjectId(project1.getId().intValue());
         Set<Tasks> tasks = new HashSet<Tasks>();
         tasks.add(task);
-        Projects project1 = new Projects();
-        project1.setId(2);
-        project1.setProjectName("ProjectTestCreateTask");
-        
+ 
         project1.setRecords(tasks);
         task.setProject(project1);
         transaction.begin();
@@ -248,9 +260,13 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         transaction.commit();
         //emf.close();
         MainAppFrame jf = Application.getMainFrame();
-        JPanel newP = new ProjectTaskPanel();
+
+        //JPanel newP = new ProjectTaskPanel();
+        ProjectMainPanel newP = new ProjectMainPanel();
+        JTabbedPane tp = newP.getJTabbedPane();
+        tp.setSelectedIndex(1);// go to task panel
+
         newP.setSize(1000, 1000);
-        //newP.add(new Button("test panel"));
         newP.setVisible(true);
         jf.switchPanel(newP);
         
