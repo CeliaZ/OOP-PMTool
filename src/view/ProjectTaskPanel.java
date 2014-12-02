@@ -9,7 +9,10 @@ import entity.Projects;
 import entity.Tasks;
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.GridLayout;
 import java.awt.ScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +22,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,17 +40,33 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
      * Creates new form ProjectTaskPanel
      */
     private JTable taskList;
+    private TasksTableModel model;
     
     public ProjectTaskPanel() {
         initComponents();
-        showTable();
+        model = new TasksTableModel();
+        taskList = new JTable(model);
+        taskList.setFillsViewportHeight(true);
+        tasksPanel.getViewport().add(taskList);
+        detailPanel.setLayout(new BorderLayout(0, 0));
+        taskList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JTable target = (JTable)e.getSource();
+                int row = target.getSelectedRow();
+                System.out.println("clicked " + row);
+                Tasks task = model.getTaskAt(row);
+                ProjectTaskDetailPanel panel = new ProjectTaskDetailPanel(task);
+                detailPanel.removeAll();
+//                detailPanel.setLayout(new GridLayout(0, 1));
+//                panel.setPreferredSize(detailPanel.getSize());
+//                panel.setSize(300, 300);
+                detailPanel.add(panel, BorderLayout.CENTER);
+                panel.revalidate();
+                System.out.println(detailPanel.getSize());
+            }
+        });
     }
     
-    private void showTable() {
-        taskList = new JTable(new TasksTableModel());
-        taskList.setFillsViewportHeight(true);
-        jScrollPane1.getViewport().add(taskList);
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,7 +77,8 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        tasksPanel = new javax.swing.JScrollPane();
+        detailPanel = new javax.swing.JPanel();
 
         jButton1.setText("Add Task");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -66,23 +87,39 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
             }
         });
 
+        javax.swing.GroupLayout detailPanelLayout = new javax.swing.GroupLayout(detailPanel);
+        detailPanel.setLayout(detailPanelLayout);
+        detailPanelLayout.setHorizontalGroup(
+            detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 959, Short.MAX_VALUE)
+        );
+        detailPanelLayout.setVerticalGroup(
+            detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 318, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 23, Short.MAX_VALUE))
+                .addComponent(jButton1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(detailPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tasksPanel))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tasksPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addGap(0, 23, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -100,7 +137,8 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel detailPanel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane tasksPanel;
     // End of variables declaration//GEN-END:variables
 }

@@ -63,4 +63,7 @@ public class TasksTableModel extends AbstractTableModel {
         return null;
     }
     
+    public Tasks getTaskAt(int row) {
+        return tasks.get(row);
+    }
 }
