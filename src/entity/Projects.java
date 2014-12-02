@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -66,7 +67,7 @@ public class Projects implements Serializable {
     private Date updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="project")
-    private Set<Tasks> tasks;
+    private List<Tasks> tasks;
     
     public Projects() {
     }
@@ -129,12 +130,12 @@ public class Projects implements Serializable {
     }
     
     
-    public Set<Tasks> getTasks() {
+    public List<Tasks> getTasks() {
         return tasks;
    }
 
    
-   public void setRecords(Set<Tasks> tasks) {
+   public void setRecords(List<Tasks> tasks) {
        this.tasks = tasks;
    }
 

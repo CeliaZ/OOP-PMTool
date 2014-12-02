@@ -11,7 +11,9 @@ import entity.Tasks;
 import java.awt.Button;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -326,7 +328,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
 
         
         task.setProjectId(project1.getId().intValue());   
-        Set<Tasks> tasks = new HashSet<Tasks>();
+        List<Tasks> tasks = new ArrayList<Tasks>();
         tasks.add(task);
  
         project1.setRecords(tasks);

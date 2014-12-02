@@ -22,6 +22,8 @@ import javax.persistence.TypedQuery;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import model.TasksModel;
+import model.TasksTableModel;
 import services.Application;
 
 /**
@@ -42,41 +44,13 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
     }
     
     private void fetchData() {
-    //get data from db and show on table;
-        String colNames[] = {"Task ID", "Task Name", "Task Owner", "Due day", "Updated Time"};
-        //String[][] data = new String[4][4];
-        
-        // fetch data from db tasks
-        //Tasks tasks = new Tasks(1);
-        EntityManager em = Application.getEnitityManager();
-//        System.out.println(em);
-        //TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
-        TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
-        //Query queryProById = em.createNamedQuery("findById");
-        Integer proId = 40;
-        Projects pro = queryProById.setParameter("id", proId).getSingleResult();
-
-//        Projects pro = queryProById.getResultList().get(0);
-        Set<Tasks> tasks = pro.getTasks();
-        int size = tasks.size();
-        System.out.println(size);
-        String [][] data= new String[size][5];
-        int count = 0;
-        for(Tasks task: tasks) {
-            data[count][0] = Integer.toString(count + 1);
-            data[count][1] = task.getTaskName();
-            data[count][2] = task.getOwnerId().toString();
-            data[count][3] = task.getStartTime().toString();
-            data[count][4] = task.getEndTime().toString();
-            count++;
-        }
-        
-        taskList = new JTable(data, colNames);
+        taskList = new JTable(new TasksTableModel());
         showTable();
     }
     
     private void showTable() {
         scrollPane = new JScrollPane(taskList);
+        taskList.setFillsViewportHeight(true);
         taskList.setSize(900, 900);
         scrollPane.setSize(300, 300);
         this.add(scrollPane);
