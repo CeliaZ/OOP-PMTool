@@ -307,31 +307,33 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         // get project id
         //int proId = project1.getId();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(jTextField9.getText());
-        sb.append("-");
-        sb.append(jTextField8.getText());
-        sb.append("-");
-        sb.append(jTextField7.getText());
-        Date st = Date.valueOf(sb.toString());
+        Date st = null;
+        Date et = null;
         
-        StringBuilder sb2 = new StringBuilder();
-        sb2.append(jTextField6.getText());
-        sb2.append("-");
-        sb2.append(jTextField5.getText());
-        sb2.append("-");
-        sb2.append(jTextField4.getText());
-        Date et = Date.valueOf(sb2.toString());
+        if (jTextField9.getText().length() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(jTextField9.getText());
+            sb.append("-");
+            sb.append(jTextField8.getText());
+            sb.append("-");
+            sb.append(jTextField7.getText());
+            st = Date.valueOf(sb.toString());
+        }
+        
+        if (jTextField6.getText().length() > 0) {
+            StringBuilder sb2 = new StringBuilder();
+            sb2.append(jTextField6.getText());
+            sb2.append("-");
+            sb2.append(jTextField5.getText());
+            sb2.append("-");
+            sb2.append(jTextField4.getText());
+            et = Date.valueOf(sb2.toString());
+        }
 
-        System.out.println(st.toString());
         Tasks task = new Tasks(array[0], array[1], Integer.valueOf((String) array[2]).intValue(), st, et);
-
         
+        project1.getTasks().add(task);
         task.setProjectId(project1.getId().intValue());   
-        List<Tasks> tasks = new ArrayList<Tasks>();
-        tasks.add(task);
- 
-        project1.setRecords(tasks);
         task.setProject(project1);
         transaction.begin();
         Application.getEnitityManager().persist(task);
@@ -345,7 +347,6 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         tp.setSelectedIndex(1);// go to task panel
 
         newP.setSize(1000, 1000);
-        newP.setVisible(true);
         jf.switchPanel(newP);
         
 //        remove(firstPanel);
