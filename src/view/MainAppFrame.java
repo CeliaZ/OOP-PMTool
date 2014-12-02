@@ -18,9 +18,6 @@ public class MainAppFrame extends JFrame {
     /**
      * Creates new form MainAppFrame
      */
-    // Tanmay is testing push 
-    // tanmay is testing push again
-    // cherry!!!
     private JPanel panel = new JPanel();
     //private JFrame mainFrame = new JFrame();
     
