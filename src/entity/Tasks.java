@@ -94,6 +94,14 @@ public class Tasks implements Serializable {
         this.ownerId = owner;
     }
     
+    public Tasks(String taskName, String description, Integer owner, Date startTime, Date endTime) {
+        this.taskName = taskName;
+        this.description = description;
+        this.ownerId = owner;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+    
     public Tasks(Integer id, int projectId) {
         this.id = id;
         this.projectId = projectId;

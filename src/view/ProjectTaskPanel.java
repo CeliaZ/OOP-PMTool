@@ -66,18 +66,11 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
             data[count][0] = Integer.toString(count + 1);
             data[count][1] = task.getTaskName();
             data[count][2] = task.getOwnerId().toString();
-            data[count][3] = "ddd";
-            data[count][4] = "ddc";
+            data[count][3] = task.getStartTime().toString();
+            data[count][4] = task.getEndTime().toString();
             count++;
         }
         
-        
-//        String [][] data= new String[][]{
-//            {"1","Task1", "cherry","Dec 2014", "Nov 30"},
-//            {"2", "Task1", "cherry","Dec 2014", "Nov 30"},
-//            {"3", "Task1", "cherry","Dec 2014", "Nov 30"},
-//            {"4", "Task1", "cherry","Dec 2014", "Nov 30"}
-//        };
         taskList = new JTable(data, colNames);
         showTable();
     }
