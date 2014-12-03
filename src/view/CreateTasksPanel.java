@@ -301,7 +301,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         //TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
         TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
         //Query queryProById = em.createNamedQuery("findById");
-        Integer proId = 40;
+        Integer proId = 40; // TODO
         Projects project1 = queryProById.setParameter("id", proId).getSingleResult();
         
         
@@ -340,7 +340,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         transaction.commit();
 
         Messages message = new Messages();
-        message.setSenderId(1);
+        message.setSenderId(1); // TODO change to user id
         message.setProjectId(proId);
         message.setTaskId(task.getId());
         message.setContent("created this task.");

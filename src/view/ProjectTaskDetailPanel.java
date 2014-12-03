@@ -9,8 +9,12 @@ import entity.Messages;
 import entity.Projects;
 import entity.Tasks;
 import entity.Users;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import services.Application;
 
@@ -30,6 +34,26 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
         initComponents();
         textTitle.setText(task.getTaskName());
         textComments.setEditable(false);
+        reloadComments();
+        
+        buttonComment.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Messages m = new Messages();
+                m.setTaskId(task.getId());
+                m.setContent(textComment.getText());
+                m.setSenderId(1); // TODO change to user id
+                m.setCreatedAt(new Date());
+                EntityTransaction transaction = Application.getEnitityManager().getTransaction();
+                transaction.begin();
+                Application.getEnitityManager().persist(m);
+                transaction.commit();
+                reloadComments();
+            }
+        });
+    }
+    
+    private void reloadComments() {
         textComments.setContentType("text/html");
         StringBuilder html = new StringBuilder("<html>");
         EntityManager em = Application.getEnitityManager();
@@ -44,6 +68,7 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
         }
         html.append("</ul></html>");
         textComments.setText(html.toString());
+        textComments.repaint();
     }
 
     /**
@@ -98,20 +123,18 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonComment))
+                        .addComponent(buttonComment, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4))
-                                .addGap(0, 804, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(62, 62, 62)
-                                .addComponent(textTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(0, 804, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(62, 62, 62)
+                        .addComponent(textTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()

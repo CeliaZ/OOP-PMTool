@@ -50,6 +50,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         tasksPanel.getViewport().add(taskList);
         detailPanel.setLayout(new BorderLayout(0, 0));
         taskList.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 JTable target = (JTable)e.getSource();
                 int row = target.getSelectedRow();
