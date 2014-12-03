@@ -53,7 +53,6 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 JTable target = (JTable)e.getSource();
                 int row = target.getSelectedRow();
-                System.out.println("clicked " + row);
                 Tasks task = model.getTaskAt(row);
                 ProjectTaskDetailPanel panel = new ProjectTaskDetailPanel(task);
                 detailPanel.removeAll();
@@ -62,7 +61,6 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
 //                panel.setSize(300, 300);
                 detailPanel.add(panel, BorderLayout.CENTER);
                 panel.revalidate();
-                System.out.println(detailPanel.getSize());
             }
         });
     }
