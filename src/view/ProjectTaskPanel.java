@@ -26,7 +26,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import model.TasksModel;
 import model.TasksTableModel;
 import services.Application;
 
