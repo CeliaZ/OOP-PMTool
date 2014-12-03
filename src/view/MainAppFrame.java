@@ -38,6 +38,7 @@ public class MainAppFrame extends JFrame {
     
     public void switchPanel(JPanel newPanel) {
         this.remove(panel);
+        newPanel.setSize(1024, 750);
         this.add(newPanel);
         this.panel = newPanel;
         this.revalidate();
@@ -55,7 +56,6 @@ public class MainAppFrame extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
-        setResizable(false);
         setSize(new java.awt.Dimension(1024, 768));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

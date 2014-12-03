@@ -5,7 +5,14 @@
  */
 package view;
 
+import entity.Messages;
+import entity.Projects;
 import entity.Tasks;
+import entity.Users;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import services.Application;
 
 /**
  *
@@ -22,6 +29,21 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
         this.task = task;
         initComponents();
         textTitle.setText(task.getTaskName());
+        textComments.setEditable(false);
+        textComments.setContentType("text/html");
+        StringBuilder html = new StringBuilder("<html>");
+        EntityManager em = Application.getEnitityManager();
+        TypedQuery<Messages> query = (TypedQuery<Messages>) em.createNamedQuery("Messages.findByTaskId");
+        TypedQuery<Users> queryUser = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
+        List<Messages> messages = query.setParameter("taskId",task.getId()).getResultList();
+        for (Messages m : messages) {
+            Users users = queryUser.setParameter("id", m.getSenderId()).getSingleResult();
+            html.append("<span color='gray'>(").append(m.getCreatedAt().toString()).append(") </span>");
+            html.append("<span color='green'><b>").append(users.getFirstName()).append("</b></span>");
+            html.append(": ").append(m.getContent()).append("<br />");
+        }
+        html.append("</ul></html>");
+        textComments.setText(html.toString());
     }
 
     /**
@@ -40,13 +62,15 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         textTitle = new java.awt.TextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        textComments = new javax.swing.JTextPane();
+        textComment = new javax.swing.JTextPane();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        textComments1 = new javax.swing.JTextPane();
+        textComments = new javax.swing.JTextPane();
         buttonComment = new javax.swing.JButton();
 
         jScrollPane1.setViewportView(jTextPane1);
+
+        setPreferredSize(new java.awt.Dimension(900, 426));
 
         jLabel1.setText("Title:");
 
@@ -54,13 +78,13 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Owner:");
 
-        textComments.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane2.setViewportView(textComments);
+        textComment.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane2.setViewportView(textComment);
 
         jLabel4.setText("History:");
 
-        textComments1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jScrollPane3.setViewportView(textComments1);
+        textComments.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane3.setViewportView(textComments);
 
         buttonComment.setText("Comment");
 
@@ -72,23 +96,26 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonComment))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4))
+                                .addGap(0, 804, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(62, 62, 62)
-                                .addComponent(textTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 587, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4))
-                        .addContainerGap(85, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonComment))))
+                                .addComponent(textTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
@@ -104,9 +131,9 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                        .addGap(64, 64, 64)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 277, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -114,8 +141,8 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(339, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(178, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(48, 48, 48)))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -131,8 +158,8 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane textComment;
     private javax.swing.JTextPane textComments;
-    private javax.swing.JTextPane textComments1;
     private java.awt.TextField textTitle;
     // End of variables declaration//GEN-END:variables
 }

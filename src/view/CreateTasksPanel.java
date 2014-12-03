@@ -6,6 +6,7 @@
 package view;
 
 import controller.TasksController;
+import entity.Messages;
 import entity.Projects;
 import entity.Tasks;
 import java.awt.Button;
@@ -191,7 +192,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
                                 .addComponent(jLabel8))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
                                 .addComponent(jLabel12)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -213,7 +214,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextField9)
                             .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))))
-                .addContainerGap(350, Short.MAX_VALUE))
+                .addContainerGap(394, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,7 +249,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -331,14 +332,24 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         }
 
         Tasks task = new Tasks(array[0], array[1], Integer.valueOf((String) array[2]).intValue(), st, et);
-        
         project1.getTasks().add(task);
         task.setProjectId(project1.getId().intValue());   
         task.setProject(project1);
         transaction.begin();
         Application.getEnitityManager().persist(task);
         transaction.commit();
-        //emf.close();
+
+        Messages message = new Messages();
+        message.setSenderId(1);
+        message.setProjectId(proId);
+        message.setTaskId(task.getId());
+        message.setContent("created this task.");
+        message.setCreatedAt(new java.util.Date());
+        transaction.begin();
+        Application.getEnitityManager().persist(message);
+        transaction.commit();
+       
+//emf.close();
         MainAppFrame jf = Application.getMainFrame();
 
         //JPanel newP = new ProjectTaskPanel();
@@ -346,7 +357,6 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         JTabbedPane tp = newP.getJTabbedPane();
         tp.setSelectedIndex(1);// go to task panel
 
-        newP.setSize(1000, 1000);
         jf.switchPanel(newP);
         
 //        remove(firstPanel);

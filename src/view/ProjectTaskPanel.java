@@ -55,10 +55,8 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                 int row = target.getSelectedRow();
                 Tasks task = model.getTaskAt(row);
                 ProjectTaskDetailPanel panel = new ProjectTaskDetailPanel(task);
+                panel.setSize(detailPanel.getSize());
                 detailPanel.removeAll();
-//                detailPanel.setLayout(new GridLayout(0, 1));
-//                panel.setPreferredSize(detailPanel.getSize());
-//                panel.setSize(300, 300);
                 detailPanel.add(panel, BorderLayout.CENTER);
                 panel.revalidate();
             }
@@ -89,11 +87,11 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         detailPanel.setLayout(detailPanelLayout);
         detailPanelLayout.setHorizontalGroup(
             detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 959, Short.MAX_VALUE)
+            .addGap(0, 983, Short.MAX_VALUE)
         );
         detailPanelLayout.setVerticalGroup(
             detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 318, Short.MAX_VALUE)
+            .addGap(0, 426, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -126,9 +124,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         // switch to createtaskPanel
         MainAppFrame jf = Application.getMainFrame();
         JPanel newP = new CreateTasksPanel();
-        newP.setSize(1000, 1000);
-        //newP.add(new Button("test panel"));
-        newP.setVisible(true);
+        newP.setSize(1024, 700);
         jf.switchPanel(newP);
     }//GEN-LAST:event_jButton1ActionPerformed
 
