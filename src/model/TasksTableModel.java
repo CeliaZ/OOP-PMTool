@@ -7,8 +7,8 @@ package model;
 
 import entity.Projects;
 import entity.Tasks;
+import entity.Users;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.swing.table.AbstractTableModel;
@@ -54,7 +54,12 @@ public class TasksTableModel extends AbstractTableModel {
             case 1:
                 return t.getTaskName();
             case 2:
-                return t.getOwnerId();
+                int ownerId = t.getOwnerId();
+                EntityManager em = Application.getEnitityManager();
+                TypedQuery<Users> queryUserById = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
+                Users taskOwner = queryUserById.setParameter("id", ownerId).getSingleResult();
+                String ownerName = taskOwner.getFirstName();
+                return ownerName;
             case 3:
                 return t.getStartTime();
             case 4:

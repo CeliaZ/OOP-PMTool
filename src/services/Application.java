@@ -5,12 +5,9 @@
  */
 package services;
 
-import java.awt.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import view.MainAppFrame;
 
 /**
@@ -19,22 +16,12 @@ import view.MainAppFrame;
  */
 public class Application {
     private static MainAppFrame mainFrame;
-    private static JPanel panel;
     private static EntityManager entityManager;
     
     public static MainAppFrame getMainFrame () {      
         return mainFrame;
     }
     
-//    public static JPanel getPanel () {
-//        for (Component component : mainFrame.getComponents())
-//            if (component.isVisible()) {
-//                 panel = (JPanel) component;
-//                 break;
-//            }   
-//        //mainFrame.getComponents()[0];
-//        return panel;
-//    }
     public static void init(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
         entityManager = emf.createEntityManager();

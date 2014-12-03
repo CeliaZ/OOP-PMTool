@@ -6,7 +6,6 @@
 package view;
 
 import entity.Messages;
-import entity.Projects;
 import entity.Tasks;
 import entity.Users;
 import java.awt.event.MouseAdapter;
@@ -33,6 +32,18 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
         this.task = task;
         initComponents();
         textTitle.setText(task.getTaskName());
+        // get taskowner name with join query from task's owner id and user in user table
+        int ownerId = task.getOwnerId();
+        EntityManager em = Application.getEnitityManager();
+        TypedQuery<Users> queryUserById = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
+        Users taskOwner = queryUserById.setParameter("id", ownerId).getSingleResult();
+        String ownerName = taskOwner.getFirstName();
+        textOwner.setText(ownerName);
+        textDescription.setText(task.getDescription());//check whether will change line
+        
+        textTitle.setEditable(false);
+        textOwner.setEditable(false);
+        textDescription.setEditable(false);
         textComments.setEditable(false);
         reloadComments();
         
@@ -92,6 +103,9 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         textComments = new javax.swing.JTextPane();
         buttonComment = new javax.swing.JButton();
+        textOwner = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        textDescription = new javax.swing.JTextArea();
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -113,6 +127,10 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
 
         buttonComment.setText("Comment");
 
+        textDescription.setColumns(20);
+        textDescription.setRows(5);
+        jScrollPane4.setViewportView(textDescription);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,19 +139,24 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonComment, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4))
-                        .addGap(0, 804, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(62, 62, 62)
-                        .addComponent(textTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(textOwner)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane4)))))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -156,10 +179,13 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                         .addComponent(jLabel2)
                         .addGap(64, 64, 64)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(textOwner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(233, 233, 233)
                         .addComponent(buttonComment)))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,9 +206,12 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane textComment;
     private javax.swing.JTextPane textComments;
+    private javax.swing.JTextArea textDescription;
+    private javax.swing.JTextField textOwner;
     private java.awt.TextField textTitle;
     // End of variables declaration//GEN-END:variables
 }

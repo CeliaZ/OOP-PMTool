@@ -8,21 +8,10 @@ package view;
 import entity.Messages;
 import entity.Projects;
 import entity.Tasks;
-import java.awt.Button;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import services.Application;
 
@@ -108,7 +97,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "item1" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -334,6 +323,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         project1.getTasks().add(task);
         task.setProjectId(project1.getId().intValue());   
         task.setProject(project1);
+        task.setCreatedAt(new java.util.Date());
         transaction.begin();
         Application.getEnitityManager().persist(task);
         transaction.commit();

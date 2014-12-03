@@ -5,26 +5,11 @@
  */
 package view;
 
-import entity.Projects;
 import entity.Tasks;
 import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.GridLayout;
-import java.awt.ScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import model.TasksTableModel;
 import services.Application;

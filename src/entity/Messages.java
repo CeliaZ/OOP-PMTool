@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Messages.findAll", query = "SELECT m FROM Messages m"),
     @NamedQuery(name = "Messages.findById", query = "SELECT m FROM Messages m WHERE m.id = :id"),
-    @NamedQuery(name = "Messages.findByTaskId", query = "SELECT m FROM Messages m WHERE m.taskId = :taskId ORDER BY m.createdAt DESC"),
+        @NamedQuery(name = "Messages.findByTaskId", query = "SELECT m FROM Messages m WHERE m.taskId = :taskId ORDER BY m.createdAt DESC"),
     @NamedQuery(name = "Messages.findByProjectId", query = "SELECT m FROM Messages m WHERE m.projectId = :projectId"),
     @NamedQuery(name = "Messages.findBySenderId", query = "SELECT m FROM Messages m WHERE m.senderId = :senderId"),
     @NamedQuery(name = "Messages.findByCreatedAt", query = "SELECT m FROM Messages m WHERE m.createdAt = :createdAt"),
