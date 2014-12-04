@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -63,11 +65,33 @@ public class Projects implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy="project")
     private List<Tasks> tasks;
     
+//    // many to many with projectuser roles
+//     @ManyToMany(cascade=CascadeType.ALL, mappedBy="projects")
+//
+//     private Set<Users> users;
+//
+//    
+//      public Set<Users> getUsers() {
+//  return users;
+//   }
+//
+//  
+//   public void setUsers(Set<Users> rec) {
+//
+//  users = rec;
+//
+//   }
+    
     public Projects() {
     }
 
     public Projects(Integer id) {
         this.id = id;
+    }
+    
+    
+    public Projects(String projectName) {
+        this.projectName = projectName;
     }
 
     public Projects(Integer id, String projectName) {

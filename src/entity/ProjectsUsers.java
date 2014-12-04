@@ -69,6 +69,11 @@ public class ProjectsUsers implements Serializable {
         this.projectId = projectId;
         this.userId = userId;
     }
+    
+    public ProjectsUsers(int projectId, int userId) {
+        this.projectId = projectId;
+        this.userId = userId;
+    }
 
     public Integer getId() {
         return id;

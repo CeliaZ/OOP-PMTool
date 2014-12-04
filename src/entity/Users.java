@@ -7,18 +7,29 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import services.Application;
 
 /**
  *
@@ -69,6 +80,31 @@ public class Users implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    
+//    
+//    // many to many  with join table
+//    
+//    @ManyToMany(cascade=CascadeType.ALL)
+//    @JoinTable(name="projects_users", 
+//  joinColumns = @JoinColumn(name="user_id"),
+//  inverseJoinColumns = @JoinColumn(name="project_id"))
+//    private Set<Projects> projects;
+//    
+//    
+//    public  Set<Projects> getProjects() {
+//
+//return projects;
+//
+//}
+//
+// 
+//
+//public void setProjects(Set<Projects> projectsList) {
+//
+//projects = projectsList;
+//
+//}
+    
     public Users() {
     }
 
@@ -85,6 +121,14 @@ public class Users implements Serializable {
         this.isAdmin = isAdmin;
     }
 
+    public Users(String firstName, String passwordHash, String passwordSalt, String email, boolean isAdmin) {
+        this.firstName = firstName;
+        this.passwordHash = passwordHash;
+        this.passwordSalt = passwordSalt;
+        this.email = email;
+        this.isAdmin = isAdmin;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -182,4 +226,65 @@ public class Users implements Serializable {
         return "entity.Users[ id=" + id + " ]";
     }
     
+    
+//    // test for many to many
+//    public static void main(String[] args) {
+//    
+//    // create sets of courses
+//        
+//        // create a set of student records
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
+//        EntityManager manager = emf.createEntityManager();
+//    EntityTransaction transaction = manager.getTransaction();
+//    Users user1 = new Users("testjoin2", "passwordHash", "Salt", "String@email.com", false);
+//
+////Users user2 = new Users("testjoin", "passwordHash", "String passwordSalt", "String@email.com", false);
+// 
+//
+////
+////HashSet<Users> set1 = new HashSet<Users>();
+////
+////set1.add(user1);
+//
+////set1.add(user2);
+//
+//
+//transaction.begin();
+//        manager.persist(user1);
+////         Application.getEnitityManager().persist(user2);
+//        transaction.commit();
+//
+//
+//Projects project1 = new Projects("String projectName2");
+//
+////HashSet<Projects> projectSet1 = new HashSet<Projects>();
+////        
+////projectSet1.add(project1);
+//
+//
+//transaction.begin();
+//        manager.persist(project1);
+////         Application.getEnitityManager().persist(user2);
+//        transaction.commit();
+//
+//
+//
+////// students in set1 are enrolled in course1
+////
+////project1.setUsers(set1);
+////
+////user1.setProjects(projectSet1);
+////
+////transaction.begin();
+////        manager.persist(project1);
+//////         Application.getEnitityManager().persist(user2);
+////        transaction.commit();
+//
+//
+//        ProjectsUsers pu = new ProjectsUsers(project1.getId(),user1.getId());
+//        pu.setRole("projectmanager");
+//        transaction.begin();
+//        manager.persist(pu);
+//        transaction.commit();
+//    }
 }
