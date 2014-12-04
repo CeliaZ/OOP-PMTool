@@ -181,6 +181,7 @@ public class AdminPanel extends javax.swing.JPanel {
         butClear = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
         chkPassVisible = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         panelNewTeam = new javax.swing.JPanel();
@@ -210,7 +211,7 @@ public class AdminPanel extends javax.swing.JPanel {
         );
         panelExistingLayout.setVerticalGroup(
             panelExistingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 450, Short.MAX_VALUE)
         );
 
         panelNew.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New User", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Consolas", 0, 13))); // NOI18N
@@ -257,34 +258,40 @@ public class AdminPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("TEST");
+
         javax.swing.GroupLayout panelNewLayout = new javax.swing.GroupLayout(panelNew);
         panelNew.setLayout(panelNewLayout);
         panelNewLayout.setHorizontalGroup(
             panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelNewLayout.createSequentialGroup()
-                .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelNewLayout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(butAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelNewLayout.createSequentialGroup()
-                                .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(27, 27, 27)
-                                .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtFirstName)
-                                    .addComponent(txtLastName)
-                                    .addComponent(txtEmail)
-                                    .addComponent(txtPassword)
-                                    .addComponent(chkPassVisible, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))))
+                .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelNewLayout.createSequentialGroup()
+                            .addGap(37, 37, 37)
+                            .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(butAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panelNewLayout.createSequentialGroup()
+                                    .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(27, 27, 27)
+                                    .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtFirstName)
+                                        .addComponent(txtLastName)
+                                        .addComponent(txtEmail)
+                                        .addComponent(txtPassword)
+                                        .addComponent(chkPassVisible, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))))
+                        .addGroup(panelNewLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(butDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                                .addComponent(butClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(panelNewLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelNewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(butDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                            .addComponent(butClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(141, 141, 141)
+                        .addComponent(jButton1)))
                 .addContainerGap(98, Short.MAX_VALUE))
         );
         panelNewLayout.setVerticalGroup(
@@ -314,7 +321,9 @@ public class AdminPanel extends javax.swing.JPanel {
                 .addComponent(butDelete)
                 .addGap(18, 18, 18)
                 .addComponent(butClear)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -605,6 +614,7 @@ public class AdminPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkPassVisible;
     private javax.swing.JComboBox combCategory;
     private javax.swing.JComboBox combUserList;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
