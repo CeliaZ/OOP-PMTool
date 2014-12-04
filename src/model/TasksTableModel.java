@@ -61,9 +61,9 @@ public class TasksTableModel extends AbstractTableModel {
                 String ownerName = taskOwner.getFirstName();
                 return ownerName;
             case 3:
-                return t.getStartTime();
-            case 4:
                 return t.getEndTime();
+            case 4:
+                return t.getUpdatedAt();
         }
         return null;
     }
