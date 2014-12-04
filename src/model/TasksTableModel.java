@@ -24,7 +24,7 @@ public class TasksTableModel extends AbstractTableModel {
     public TasksTableModel() {
         EntityManager em = Application.getEnitityManager();
         TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
-        Integer proId = 40;
+        Integer proId = 24;
         Projects pro = queryProById.setParameter("id", proId).getSingleResult();
         tasks = pro.getTasks();
     }

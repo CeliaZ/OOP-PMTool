@@ -133,7 +133,8 @@ public class MainAppFrame extends JFrame {
         //JPanel panel = new CreateTasksPanel();
         Application.init();
         //JPanel panel = new ProjectTaskPanel();
-        JPanel panel = new ProjectMainPanel();
+//        JPanel panel = new ProjectMainPanel();
+        JPanel panel = new AdminPanel();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

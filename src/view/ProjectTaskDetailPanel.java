@@ -53,7 +53,7 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                 Messages m = new Messages();
                 m.setTaskId(task.getId());
                 m.setContent(textComment.getText());
-                m.setSenderId(1); // TODO change to user id
+                m.setSenderId(14); // TODO change to user id
                 m.setCreatedAt(new Date());
                 EntityTransaction transaction = Application.getEnitityManager().getTransaction();
                 transaction.begin();

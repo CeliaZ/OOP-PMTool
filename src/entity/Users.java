@@ -6,9 +6,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,22 +19,24 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
-import services.Application;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Cherry
+ * @author tanmaykuruvilla
  */
+//SELECT e.id FROM users e WHERE e.email = :cnum
+//manager.createQuery("SELECT T FROM " +Projects.class.getName()+" T", Projects.class);
+//SELECT e.passwordHash FROM users e WHERE e.email = :cnum
 @Entity
 @Table(name = "users")
 @XmlRootElement
@@ -48,8 +50,13 @@ import services.Application;
     @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
     @NamedQuery(name = "Users.findByIsAdmin", query = "SELECT u FROM Users u WHERE u.isAdmin = :isAdmin"),
     @NamedQuery(name = "Users.findByCreatedAt", query = "SELECT u FROM Users u WHERE u.createdAt = :createdAt"),
-    @NamedQuery(name = "Users.findByUpdatedAt", query = "SELECT u FROM Users u WHERE u.updatedAt = :updatedAt")})
+    @NamedQuery(name = "Users.findByUpdatedAt", query = "SELECT u FROM Users u WHERE u.updatedAt = :updatedAt"),
+     @NamedQuery(name = "Users.findIdByEmail", query = "SELECT e.id FROM Users e WHERE e.email = :email"),
+     @NamedQuery(name = "Users.findPassByEmail", query = "SELECT e.passwordHash FROM Users e WHERE e.email = :email")
+ })
 public class Users implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    private Collection<ProjectsUsers> projectsUsersCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,38 +80,13 @@ public class Users implements Serializable {
     @Basic(optional = false)
     @Column(name = "is_admin")
     private boolean isAdmin;
-    @Column(name = "created_at")
+    @Column(name = "created_at",insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    
-//    
-//    // many to many  with join table
-//    
-//    @ManyToMany(cascade=CascadeType.ALL)
-//    @JoinTable(name="projects_users", 
-//  joinColumns = @JoinColumn(name="user_id"),
-//  inverseJoinColumns = @JoinColumn(name="project_id"))
-//    private Set<Projects> projects;
-//    
-//    
-//    public  Set<Projects> getProjects() {
-//
-//return projects;
-//
-//}
-//
-// 
-//
-//public void setProjects(Set<Projects> projectsList) {
-//
-//projects = projectsList;
-//
-//}
-    
     public Users() {
     }
 
@@ -121,7 +103,9 @@ public class Users implements Serializable {
         this.isAdmin = isAdmin;
     }
 
-    public Users(String firstName, String passwordHash, String passwordSalt, String email, boolean isAdmin) {
+    //cherry
+
+   public Users(String firstName, String passwordHash, String passwordSalt, String email, boolean isAdmin) {
         this.firstName = firstName;
         this.passwordHash = passwordHash;
         this.passwordSalt = passwordSalt;
@@ -129,6 +113,7 @@ public class Users implements Serializable {
         this.isAdmin = isAdmin;
     }
     
+
     public Integer getId() {
         return id;
     }
@@ -200,6 +185,8 @@ public class Users implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+      
 
     @Override
     public int hashCode() {
@@ -225,66 +212,102 @@ public class Users implements Serializable {
     public String toString() {
         return "entity.Users[ id=" + id + " ]";
     }
+
+    public String getColumnData(int i) throws Exception
+    {
+    if (i == 0)
+    return getId().toString();
+    else if (i == 1)
+    return getFirstName();
+    else if (i == 2)
+    return getLastName();
+    else if (i == 3)
+    return getPasswordHash();
+    else if(i == 4)
+    return getPasswordSalt();
+    else if(i == 5)
+        return (""+getIsAdmin());
+    else if(i == 6)
+        return getEmail();
+    else if(i == 7)
+        return getCreatedAt()+"";
+    else if(i == 8)
+        return getUpdatedAt()+"";
     
+    else
+    throw new Exception("Error: invalid column index in courselist table");
+    }
     
-//    // test for many to many
-//    public static void main(String[] args) {
-//    
-//    // create sets of courses
-//        
-//        // create a set of student records
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
-//        EntityManager manager = emf.createEntityManager();
-//    EntityTransaction transaction = manager.getTransaction();
-//    Users user1 = new Users("testjoin2", "passwordHash", "Salt", "String@email.com", false);
-//
-////Users user2 = new Users("testjoin", "passwordHash", "String passwordSalt", "String@email.com", false);
-// 
-//
-////
-////HashSet<Users> set1 = new HashSet<Users>();
-////
-////set1.add(user1);
-//
-////set1.add(user2);
-//
-//
-//transaction.begin();
-//        manager.persist(user1);
-////         Application.getEnitityManager().persist(user2);
-//        transaction.commit();
-//
-//
-//Projects project1 = new Projects("String projectName2");
-//
-////HashSet<Projects> projectSet1 = new HashSet<Projects>();
-////        
-////projectSet1.add(project1);
-//
-//
-//transaction.begin();
-//        manager.persist(project1);
-////         Application.getEnitityManager().persist(user2);
-//        transaction.commit();
-//
-//
-//
-////// students in set1 are enrolled in course1
-////
-////project1.setUsers(set1);
-////
-////user1.setProjects(projectSet1);
-////
-////transaction.begin();
-////        manager.persist(project1);
-//////         Application.getEnitityManager().persist(user2);
-////        transaction.commit();
-//
-//
-//        ProjectsUsers pu = new ProjectsUsers(project1.getId(),user1.getId());
-//        pu.setRole("projectmanager");
-//        transaction.begin();
-//        manager.persist(pu);
-//        transaction.commit();
-//    }
+    public String getColumnName(int i) throws Exception {
+
+    String colName = null;
+    if (i == 0)
+    colName = "userID";
+    else if (i == 1)
+    colName = "firstName";
+    else if (i == 2)
+   colName = "lastName";
+    else if (i == 3)
+    colName = "password";
+    else if (i == 4)
+    colName = "passSalt" ; 
+    else if (i == 5)
+    colName = "isAdmin";
+    else if (i == 6)
+    colName = "email";
+    else if (i == 7)
+    colName = "createdAt";
+    else if (i == 8)
+    colName = "updatedAt";
+    
+    else    
+    throw new Exception("Access to invalid column number in courselist table");
+    return colName;
+    }
+    
+    public void setColumnData(int col, Object aValue) {
+    }
+    
+     public int getNumberOfColumns() {
+    return 9;
+    }
+    
+    public static void  main(String [] args)
+    {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
+        EntityManager manager = emf.createEntityManager();
+        //EntityTransaction trans = manager.getTransaction();
+        //Courselist obj = new Courselist();
+        EntityTransaction userTransaction = manager.getTransaction();
+        userTransaction.begin();
+        Users newUser =  new Users();
+        newUser.setId(null);
+        newUser.setFirstName("Test1");
+        newUser.setLastName("Test2");
+        newUser.setPasswordHash("test0000");
+        newUser.setPasswordSalt("");
+        newUser.setEmail("test@emaol");
+        //newUser.setCreatedAt(1);
+        //newUser.setUpdatedAt(null);
+        manager.persist(newUser);
+        userTransaction.commit();
+        
+        
+        manager.close();
+        emf.close();
+    }
+
+    
+
+   
+
+    @XmlTransient
+    public Collection<ProjectsUsers> getProjectsUsersCollection() {
+        return projectsUsersCollection;
+    }
+
+    public void setProjectsUsersCollection(Collection<ProjectsUsers> projectsUsersCollection) {
+        this.projectsUsersCollection = projectsUsersCollection;
+    }
+    
 }

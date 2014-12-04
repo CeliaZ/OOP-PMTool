@@ -6,9 +6,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +17,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -25,10 +24,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Cherry
+ * @author tanmaykuruvilla
  */
 @Entity
 @Table(name = "projects")
@@ -38,8 +38,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Projects.findById", query = "SELECT p FROM Projects p WHERE p.id = :id"),
     @NamedQuery(name = "Projects.findByProjectName", query = "SELECT p FROM Projects p WHERE p.projectName = :projectName"),
     @NamedQuery(name = "Projects.findByPmId", query = "SELECT p FROM Projects p WHERE p.pmId = :pmId"),
+    @NamedQuery(name = "Projects.findByStatus", query = "SELECT p FROM Projects p WHERE p.status = :status"),
+    @NamedQuery(name = "Projects.findByCategory", query = "SELECT p FROM Projects p WHERE p.category = :category"),
     @NamedQuery(name = "Projects.findByCreatedAt", query = "SELECT p FROM Projects p WHERE p.createdAt = :createdAt"),
-    @NamedQuery(name = "Projects.findByUpdatedAt", query = "SELECT p FROM Projects p WHERE p.updatedAt = :updatedAt")})
+    @NamedQuery(name = "Projects.findByUpdatedAt", query = "SELECT p FROM Projects p WHERE p.updatedAt = :updatedAt"),
+    @NamedQuery(name = "Projects.findProjectIdByName", query = "SELECT p.id FROM Projects p WHERE p.projectName = :projectName"),})
 public class Projects implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,41 +58,35 @@ public class Projects implements Serializable {
     @Lob
     @Column(name = "description")
     private String description;
-    @Column(name = "created_at")
+    @Column(name = "status")
+    private String status;
+    @Column(name = "category")
+    private String category;
+    @Column(name = "created_at",insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projects")
+    private Collection<ProjectsUsers> projectsUsersCollection;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="project")
+//cherry
+
+      @OneToMany(cascade = CascadeType.ALL, mappedBy="project")
     private List<Tasks> tasks;
     
-//    // many to many with projectuser roles
-//     @ManyToMany(cascade=CascadeType.ALL, mappedBy="projects")
-//
-//     private Set<Users> users;
-//
-//    
-//      public Set<Users> getUsers() {
-//  return users;
-//   }
-//
-//  
-//   public void setUsers(Set<Users> rec) {
-//
-//  users = rec;
-//
-//   }
-    
+
+
     public Projects() {
     }
 
     public Projects(Integer id) {
         this.id = id;
     }
-    
-    
+
+
+//cherry
     public Projects(String projectName) {
         this.projectName = projectName;
     }
@@ -131,6 +128,22 @@ public class Projects implements Serializable {
         this.description = description;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -147,8 +160,72 @@ public class Projects implements Serializable {
         this.updatedAt = updatedAt;
     }
     
+    public int getNumberOfColumns() {
+    return 8;
+    }
     
-    public List<Tasks> getTasks() {
+    public String getColumnName(int i) throws Exception {
+        System.out.println("hi getColumnName");
+    String colName = null;
+    if (i == 0)
+    colName = "projID";
+    else if (i == 1)
+    colName = "name";
+    else if (i == 2)
+   colName = "manager ID";
+    else if (i == 3)
+    colName = "description";
+    else if (i == 4)
+    colName = "status" ; 
+    else if (i == 5)
+    colName = "categoty";
+    else if (i == 6)
+    colName = "created_at" ; 
+    else if (i == 7)
+    colName = "updated_at";
+    
+    else    
+    throw new Exception("Access to invalid column number in courselist table");
+    return colName;
+    }
+    
+    public String getColumnData(int i) throws Exception
+    {
+    if (i == 0)
+    return getId().toString();
+    else if (i == 1)
+    return getProjectName();
+    else if (i == 2)
+    return getPmId().toString();
+    else if (i == 3)
+    return getDescription();
+    else if (i == 4)
+    return getStatus();
+    else if (i == 5)
+    return getCategory();
+    else if (i == 6)
+     return  getCreatedAt()+"";
+    else if (i == 7)
+    return getUpdatedAt()+"";
+    else
+    throw new Exception("Error: invalid column index in courselist table");
+    }
+
+
+    @XmlTransient
+    public Collection<ProjectsUsers> getProjectsUsersCollection() {
+        return projectsUsersCollection;
+    }
+
+    public void setProjectsUsersCollection(Collection<ProjectsUsers> projectsUsersCollection) {
+        this.projectsUsersCollection = projectsUsersCollection;
+    }
+
+
+
+//cherry
+
+   public List<Tasks> getTasks() {
         return tasks;
    }
 
@@ -156,6 +233,7 @@ public class Projects implements Serializable {
    public void setTasks(List<Tasks> tasks) {
        this.tasks = tasks;
    }
+   //===
 
     @Override
     public int hashCode() {
@@ -181,6 +259,9 @@ public class Projects implements Serializable {
     public String toString() {
         return "entity.Projects[ id=" + id + " ]";
     }
-    
+
+    public void setColumnData(int col, Object aValue) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
