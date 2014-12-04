@@ -35,6 +35,7 @@ public class AdminPanel extends javax.swing.JPanel {
         addExistingTeamTable();
         populateCombUserList();
         txtPMid.setVisible(false);
+        // try to solve conflict
     }
     
     //// added method

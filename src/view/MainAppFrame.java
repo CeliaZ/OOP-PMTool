@@ -7,6 +7,7 @@ package view;
 import entity.Tasks;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import services.Application;
 
 /**
@@ -116,7 +117,8 @@ public class MainAppFrame extends JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    //javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     break;
                 }
             }
@@ -133,8 +135,8 @@ public class MainAppFrame extends JFrame {
         //JPanel panel = new CreateTasksPanel();
         Application.init();
         //JPanel panel = new ProjectTaskPanel();
-//        JPanel panel = new ProjectMainPanel();
-        JPanel panel = new AdminPanel();
+        JPanel panel = new ProjectMainPanel();
+//        JPanel panel = new AdminPanel();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
