@@ -27,6 +27,8 @@ public class ProjectMainPanel extends javax.swing.JPanel {
         jTabbedPane1.addTab("Tasks", panelTask);
         JPanel panelQuery = new QueryPanel();
         jTabbedPane1.addTab("Query", panelQuery);
+        JPanel panelTimeline = new TimelinePanel();
+        jTabbedPane1.addTab("Query", panelTimeline);
    }
 
     public JTabbedPane getJTabbedPane() {

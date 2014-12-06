@@ -8,6 +8,7 @@ package model;
 import entity.Projects;
 import entity.Tasks;
 import entity.Users;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -21,12 +22,28 @@ import services.Application;
 public class TasksTableModel extends AbstractTableModel {
     private List<Tasks> tasks;
     
-    public TasksTableModel() {
+    public TasksTableModel(String owner) {
         EntityManager em = Application.getEnitityManager();
-        TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
-        Integer proId = 24;
-        Projects pro = queryProById.setParameter("id", proId).getSingleResult();
-        tasks = pro.getTasks();
+        TypedQuery<Tasks> queryTasks = (TypedQuery<Tasks>) em.createNamedQuery("Tasks.findByProjectId");
+        Integer proId = 24; // TODO
+        tasks = queryTasks.setParameter("projectId", proId).getResultList();
+        if (owner.length() > 0) {
+            TypedQuery<Users> queryOwner = (TypedQuery<Users>) em.createNamedQuery("Users.findByFirstName");
+            Users user = queryOwner.setParameter("firstName", owner).getSingleResult();
+            if (user != null) {
+                System.out.println(user);
+                Iterator<Tasks> iter = tasks.iterator();
+                while (iter.hasNext()) {
+                    if (iter.next().getOwnerId() != user.getId()) {
+                        iter.remove();
+                    }
+                }
+            }
+        }
+    }
+    
+    public TasksTableModel() {
+        this("");
     }
 
     @Override
@@ -50,7 +67,7 @@ public class TasksTableModel extends AbstractTableModel {
         Tasks t = tasks.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return rowIndex + 1;
+                return t.getId();
             case 1:
                 return t.getTaskName();
             case 2:

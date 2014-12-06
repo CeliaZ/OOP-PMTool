@@ -51,8 +51,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Users.findByIsAdmin", query = "SELECT u FROM Users u WHERE u.isAdmin = :isAdmin"),
     @NamedQuery(name = "Users.findByCreatedAt", query = "SELECT u FROM Users u WHERE u.createdAt = :createdAt"),
     @NamedQuery(name = "Users.findByUpdatedAt", query = "SELECT u FROM Users u WHERE u.updatedAt = :updatedAt"),
-     @NamedQuery(name = "Users.findIdByEmail", query = "SELECT e.id FROM Users e WHERE e.email = :email"),
-     @NamedQuery(name = "Users.findPassByEmail", query = "SELECT e.passwordHash FROM Users e WHERE e.email = :email")
+    @NamedQuery(name = "Users.findIdByEmail", query = "SELECT e.id FROM Users e WHERE e.email = :email"),
+    @NamedQuery(name = "Users.findPassByEmail", query = "SELECT e.passwordHash FROM Users e WHERE e.email = :email")
  })
 public class Users implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
