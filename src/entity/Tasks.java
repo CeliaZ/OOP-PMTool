@@ -79,6 +79,9 @@ public class Tasks implements Serializable {
     private String status;
     @Column(name = "dependency")
     private Integer dependency;
+    @Column(name = "closed_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date closedAt;
             
     @ManyToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name="project_id")
@@ -204,6 +207,14 @@ public class Tasks implements Serializable {
 
     public void setDependency(Integer dependency) {
         this.dependency = dependency;
+    }
+    
+    public Date getClosedAt() {
+        return closedAt;
+    }
+    
+    public void setClosedAt(Date closedAt) {
+        this.closedAt = closedAt;
     }
     
     @Override

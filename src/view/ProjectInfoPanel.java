@@ -5,17 +5,47 @@
  */
 package view;
 
+import entity.Messages;
+import entity.Projects;
+import entity.Tasks;
+import entity.Users;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import services.ApplicationController;
+
 /**
  *
  * @author Cherry
  */
 public class ProjectInfoPanel extends javax.swing.JPanel {
 
+    private Projects project;
     /**
      * Creates new form ProjectInfoPanel
      */
     public ProjectInfoPanel() {
         initComponents();
+        project = ApplicationController.getCurrentProject();
+        textUpdates.setContentType("text/html");
+        StringBuilder html = new StringBuilder("<html>");
+        EntityManager em = ApplicationController.getEnitityManager();
+        TypedQuery<Tasks> query = (TypedQuery<Tasks>) em.createNamedQuery("Tasks.findByProjectId");
+        List<Tasks> tasks = query.setParameter("projectId", project.getId()).getResultList();
+        for (Tasks t : tasks) {
+            if (!"closed".equals(t.getStatus()) || t.getOwnerId() == null) {
+                continue;
+            }
+            TypedQuery<Users> queryOwner = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
+            Users u = queryOwner.setParameter("id", t.getOwnerId()).getSingleResult();
+            html.append("<span color='gray'>(").append(t.getClosedAt().toString()).append(") </span>");
+            html.append("<span color='green'><b>").append(u.getFirstName()).append("</b></span> finished task ");
+            html.append("#").append(t.getId()).append(": ").append(t.getTaskName()).append("<br />");
+        }
+        html.append("</ul></html>");
+        textUpdates.setText(html.toString());
+        textUpdates.repaint();
+
     }
 
     /**
@@ -30,12 +60,19 @@ public class ProjectInfoPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textUpdates = new javax.swing.JTextPane();
 
         jLabel1.setText("Project Name");
 
         jLabel2.setText("Project Manager");
 
-        jLabel3.setText("Team members");
+        jLabel3.setText("Team Members");
+
+        jLabel4.setText("Recent Updates");
+
+        jScrollPane2.setViewportView(textUpdates);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -44,10 +81,12 @@ public class ProjectInfoPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addContainerGap(635, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 711, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -58,7 +97,11 @@ public class ProjectInfoPanel extends javax.swing.JPanel {
                 .addComponent(jLabel2)
                 .addGap(37, 37, 37)
                 .addComponent(jLabel3)
-                .addContainerGap(253, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -67,5 +110,8 @@ public class ProjectInfoPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextPane textUpdates;
     // End of variables declaration//GEN-END:variables
 }
