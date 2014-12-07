@@ -21,7 +21,6 @@ import view.AdminPanel;
  */
 public class ProjectsController implements ListSelectionListener, TableModelListener {
 
-
     private ProjectsTableModel projectsTableModel;
     private UsersTableModel usersTableModel;
 
@@ -32,8 +31,6 @@ public class ProjectsController implements ListSelectionListener, TableModelList
             this.adminPanel = gui;
             projectsTableModel = new ProjectsTableModel();
     }
-
-    
     
     public TableModel getTableModel() {
     return projectsTableModel;

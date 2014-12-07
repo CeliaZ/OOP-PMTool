@@ -68,6 +68,10 @@ public class Projects implements Serializable {
     @Column(name = "updated_at",insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+    // cherry add budget
+    @Column(name = "budget")
+    private Integer budget;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projects")
     private Collection<ProjectsUsers> projectsUsersCollection;
 
@@ -76,7 +80,7 @@ public class Projects implements Serializable {
       @OneToMany(cascade = CascadeType.ALL, mappedBy="project")
     private List<Tasks> tasks;
     
-
+      
 
     public Projects() {
     }
@@ -158,6 +162,15 @@ public class Projects implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    //cherry add budget set and get function
+    public Integer getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Integer budget) {
+        this.budget = budget;
     }
     
     public int getNumberOfColumns() {

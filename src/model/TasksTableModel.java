@@ -13,7 +13,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.swing.table.AbstractTableModel;
-import services.Application;
+import services.ApplicationController;
 
 /**
  *
@@ -23,7 +23,7 @@ public class TasksTableModel extends AbstractTableModel {
     private List<Tasks> tasks;
     
     public TasksTableModel(String owner) {
-        EntityManager em = Application.getEnitityManager();
+        EntityManager em = ApplicationController.getEnitityManager();
         TypedQuery<Tasks> queryTasks = (TypedQuery<Tasks>) em.createNamedQuery("Tasks.findByProjectId");
         Integer proId = 24; // TODO
         tasks = queryTasks.setParameter("projectId", proId).getResultList();
@@ -72,7 +72,7 @@ public class TasksTableModel extends AbstractTableModel {
                 return t.getTaskName();
             case 2:
                 int ownerId = t.getOwnerId();
-                EntityManager em = Application.getEnitityManager();
+                EntityManager em = ApplicationController.getEnitityManager();
                 TypedQuery<Users> queryUserById = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
                 Users taskOwner = queryUserById.setParameter("id", ownerId).getSingleResult();
                 String ownerName = taskOwner.getFirstName();

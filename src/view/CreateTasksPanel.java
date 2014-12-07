@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.swing.JTabbedPane;
-import services.Application;
+import services.ApplicationController;
 
 /**
  *
@@ -282,9 +282,9 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         array[2] = jTextField2.getText();
         array[3] = jTextField2.getText();
         
-        EntityTransaction transaction = Application.getEnitityManager().getTransaction();
+        EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
 
-        EntityManager em = Application.getEnitityManager();
+        EntityManager em = ApplicationController.getEnitityManager();
 //        System.out.println(em);
         //TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
         TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
@@ -325,7 +325,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         task.setProject(project1);
         task.setCreatedAt(new java.util.Date());
         transaction.begin();
-        Application.getEnitityManager().persist(task);
+        ApplicationController.getEnitityManager().persist(task);
         transaction.commit();
 
         Messages message = new Messages();
@@ -335,11 +335,11 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         message.setContent("created this task.");
         message.setCreatedAt(new java.util.Date());
         transaction.begin();
-        Application.getEnitityManager().persist(message);
+        ApplicationController.getEnitityManager().persist(message);
         transaction.commit();
        
 //emf.close();
-        MainAppFrame jf = Application.getMainFrame();
+        MainAppFrame jf = ApplicationController.getMainFrame();
 
         //JPanel newP = new ProjectTaskPanel();
         ProjectMainPanel newP = new ProjectMainPanel();

@@ -15,7 +15,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import services.Application;
+import services.ApplicationController;
 
 /**
  *
@@ -34,7 +34,7 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
         textTitle.setText(task.getTaskName());
         // get taskowner name with join query from task's owner id and user in user table
         int ownerId = task.getOwnerId();
-        EntityManager em = Application.getEnitityManager();
+        EntityManager em = ApplicationController.getEnitityManager();
         TypedQuery<Users> queryUserById = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
         Users taskOwner = queryUserById.setParameter("id", ownerId).getSingleResult();
         String ownerName = taskOwner.getFirstName();
@@ -55,9 +55,9 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                 m.setContent(textComment.getText());
                 m.setSenderId(14); // TODO change to user id
                 m.setCreatedAt(new Date());
-                EntityTransaction transaction = Application.getEnitityManager().getTransaction();
+                EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
                 transaction.begin();
-                Application.getEnitityManager().persist(m);
+                ApplicationController.getEnitityManager().persist(m);
                 transaction.commit();
                 reloadComments();
             }
@@ -67,7 +67,7 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
     private void reloadComments() {
         textComments.setContentType("text/html");
         StringBuilder html = new StringBuilder("<html>");
-        EntityManager em = Application.getEnitityManager();
+        EntityManager em = ApplicationController.getEnitityManager();
         TypedQuery<Messages> query = (TypedQuery<Messages>) em.createNamedQuery("Messages.findByTaskId");
         TypedQuery<Users> queryUser = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
         List<Messages> messages = query.setParameter("taskId",task.getId()).getResultList();
@@ -139,7 +139,7 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonComment, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -150,18 +150,18 @@ public class ProjectTaskDetailPanel extends javax.swing.JPanel {
                             .addComponent(jLabel3))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane4))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(17, 17, 17)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textOwner)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane4)))))
+                                    .addComponent(textOwner)
+                                    .addComponent(textTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 937, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import services.Application;
+import services.ApplicationController;
 
 /**
  *
@@ -43,7 +43,7 @@ public class TimelinePanel extends javax.swing.JPanel {
     public TimeBarModel createModel(int rows, int averageLengthInMinutes, int countPerRow) {
         int numDays = 30;
         DefaultTimeBarModel model = new DefaultTimeBarModel();
-        EntityManager em = Application.getEnitityManager();
+        EntityManager em = ApplicationController.getEnitityManager();
         TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
         Integer proId = 24;
         Projects pro = queryProById.setParameter("id", proId).getSingleResult();

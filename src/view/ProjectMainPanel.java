@@ -25,10 +25,10 @@ public class ProjectMainPanel extends javax.swing.JPanel {
         jTabbedPane1.addTab("Info", panelInfo);
         JPanel panelTask = new ProjectTaskPanel();
         jTabbedPane1.addTab("Tasks", panelTask);
-        JPanel panelQuery = new QueryPanel();
-        jTabbedPane1.addTab("Query", panelQuery);
+        JPanel panelBudgets = new ProjectBudgetsPanel();
+        jTabbedPane1.addTab("Budgets", panelBudgets);
         JPanel panelTimeline = new TimelinePanel();
-        jTabbedPane1.addTab("Query", panelTimeline);
+        jTabbedPane1.addTab("Timeline", panelTimeline);
    }
 
     public JTabbedPane getJTabbedPane() {
@@ -45,16 +45,18 @@ public class ProjectMainPanel extends javax.swing.JPanel {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
 
+        setPreferredSize(new java.awt.Dimension(1024, 710));
+
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1049, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1018, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

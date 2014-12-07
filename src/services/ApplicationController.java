@@ -5,18 +5,22 @@
  */
 package services;
 
+import entity.Projects;
+import entity.Tasks;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import view.MainAppFrame;
 
 /**
  *
  * @author Cherry
  */
-public class Application {
+public class ApplicationController {
     private static MainAppFrame mainFrame;
     private static EntityManager entityManager;
+    private static Projects currentProject;
     
     public static MainAppFrame getMainFrame () {      
         return mainFrame;
@@ -25,6 +29,7 @@ public class Application {
     public static void init(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
         entityManager = emf.createEntityManager();
+        switchCurrentProject(24); // TODO
     }
     
     public static void init(MainAppFrame frame) { 
@@ -34,5 +39,17 @@ public class Application {
     
     public static EntityManager getEnitityManager() {
         return entityManager;
+    }
+    
+    public static Projects getCurrentProject() {
+        return currentProject;
+    }
+    
+    public static void switchCurrentProject(int projectId) {
+        if (currentProject != null && currentProject.getId() == projectId) {
+            return;
+        }
+        TypedQuery<Projects> query = (TypedQuery<Projects>) entityManager.createNamedQuery("Projects.findById");
+        currentProject = query.setParameter("id", projectId).getSingleResult();
     }
 }

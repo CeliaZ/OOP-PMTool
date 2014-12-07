@@ -7,6 +7,7 @@
     <class>entity.Tasks</class>
     <class>entity.Messages</class>
     <class>entity.Projects</class>
+    <class>entity.Budgets</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/oop?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

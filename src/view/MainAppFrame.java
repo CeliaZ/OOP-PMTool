@@ -8,7 +8,7 @@ import entity.Tasks;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import services.Application;
+import services.ApplicationController;
 
 /**
  *
@@ -32,7 +32,7 @@ public class MainAppFrame extends JFrame {
         panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
         panel.setLocation(0, 30);
         this.add(panel);
-        Application.init(this);
+        ApplicationController.init(this);
     }
 
     public JPanel getCurrentPanel() {
@@ -133,7 +133,7 @@ public class MainAppFrame extends JFrame {
         }
         //</editor-fold>
         //JPanel panel = new CreateTasksPanel();
-        Application.init();
+        ApplicationController.init();
         //JPanel panel = new ProjectTaskPanel();
         JPanel panel = new ProjectMainPanel();
 //        JPanel panel = new AdminPanel();
