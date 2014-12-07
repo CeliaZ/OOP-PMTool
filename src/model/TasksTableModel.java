@@ -53,12 +53,12 @@ public class TasksTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 6;
     }
     
     @Override
     public String getColumnName(int columnIndex) {
-        String colNames[] = {"Task ID", "Task Name", "Task Owner", "Due day", "Updated Time"};
+        String colNames[] = {"Task ID", "Task Owner", "Status", "Dependency", "Task Name", "Due day"};
         return colNames[columnIndex];
     }
 
@@ -69,18 +69,20 @@ public class TasksTableModel extends AbstractTableModel {
             case 0:
                 return t.getId();
             case 1:
-                return t.getTaskName();
-            case 2:
                 int ownerId = t.getOwnerId();
                 EntityManager em = ApplicationController.getEnitityManager();
                 TypedQuery<Users> queryUserById = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
                 Users taskOwner = queryUserById.setParameter("id", ownerId).getSingleResult();
                 String ownerName = taskOwner.getFirstName();
                 return ownerName;
+            case 2:
+                return t.getStatus() == null ? "open" : t.getStatus();
             case 3:
-                return t.getEndTime();
+                return t.getDependency() == null ? "" : t.getDependency();
             case 4:
-                return t.getUpdatedAt();
+                return t.getTaskName();
+            case 5:
+                return t.getEndTime();
         }
         return null;
     }

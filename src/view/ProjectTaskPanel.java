@@ -9,6 +9,7 @@ import entity.Tasks;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.persistence.EntityTransaction;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import model.TasksTableModel;
@@ -46,12 +47,33 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                 initTaskList();
             }
         });
+        buttonClose.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = taskList.getSelectedRow();
+                Tasks task = model.getTaskAt(row);
+                if (buttonClose.getText().equals("close")) {
+                    buttonClose.setText("reopen");
+                    task.setStatus("closed");
+                } else {
+                    buttonClose.setText("close");
+                    task.setStatus("open");
+                }
+                EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
+                transaction.begin();
+                ApplicationController.getEnitityManager().persist(task);
+                transaction.commit();
+                model.fireTableDataChanged();
+                taskList.setRowSelectionInterval(row, row);
+            }
+        });
     }
     
     private void initTaskList() {
         taskList = new JTable(model);
         taskList.setFillsViewportHeight(true);
         tasksPanel.getViewport().add(taskList);
+        buttonClose.setEnabled(false);
         taskList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -62,6 +84,12 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                 panel.setSize(detailPanel.getSize());
                 detailPanel.removeAll();
                 detailPanel.add(panel, BorderLayout.CENTER);
+                buttonClose.setEnabled(true);
+                if ("closed".equals(task.getStatus())) {
+                    buttonClose.setText("reopen");
+                } else {
+                    buttonClose.setText("close");
+                }
                 panel.revalidate();
             }
         });
@@ -82,8 +110,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         textSearchOwner = new javax.swing.JTextField();
         buttonSearch = new javax.swing.JButton();
         buttonClear = new javax.swing.JButton();
-
-        setLayout(null);
+        buttonClose = new javax.swing.JButton();
 
         jButton1.setText("Add Task");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -91,10 +118,6 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1);
-        jButton1.setBounds(0, 173, 103, 29);
-        add(tasksPanel);
-        tasksPanel.setBounds(0, 0, 983, 166);
 
         javax.swing.GroupLayout detailPanelLayout = new javax.swing.GroupLayout(detailPanel);
         detailPanel.setLayout(detailPanelLayout);
@@ -107,18 +130,52 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
             .addGap(0, 425, Short.MAX_VALUE)
         );
 
-        add(detailPanel);
-        detailPanel.setBounds(0, 208, 983, 425);
-        add(textSearchOwner);
-        textSearchOwner.setBounds(701, 172, 115, 28);
-
         buttonSearch.setText("Search");
-        add(buttonSearch);
-        buttonSearch.setBounds(822, 173, 85, 29);
 
         buttonClear.setText("Clear");
-        add(buttonClear);
-        buttonClear.setBounds(913, 173, 76, 29);
+
+        buttonClose.setText("Close");
+        buttonClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCloseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tasksPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 983, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonClose)
+                .addGap(489, 489, 489)
+                .addComponent(textSearchOwner, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(buttonSearch)
+                .addGap(6, 6, 6)
+                .addComponent(buttonClear))
+            .addComponent(detailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(tasksPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textSearchOwner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton1)
+                                .addComponent(buttonClose))
+                            .addComponent(buttonSearch)
+                            .addComponent(buttonClear))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -130,10 +187,15 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         jf.switchPanel(newP);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonCloseActionPerformed
+
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonClear;
+    private javax.swing.JButton buttonClose;
     private javax.swing.JButton buttonSearch;
     private javax.swing.JPanel detailPanel;
     private javax.swing.JButton jButton1;

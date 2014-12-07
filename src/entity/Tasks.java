@@ -40,7 +40,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tasks.findByEndTime", query = "SELECT t FROM Tasks t WHERE t.endTime = :endTime"),
     @NamedQuery(name = "Tasks.findByOwnerId", query = "SELECT t FROM Tasks t WHERE t.ownerId = :ownerId"),
     @NamedQuery(name = "Tasks.findByCreatedAt", query = "SELECT t FROM Tasks t WHERE t.createdAt = :createdAt"),
-    @NamedQuery(name = "Tasks.findByUpdatedAt", query = "SELECT t FROM Tasks t WHERE t.updatedAt = :updatedAt")})
+    @NamedQuery(name = "Tasks.findByUpdatedAt", query = "SELECT t FROM Tasks t WHERE t.updatedAt = :updatedAt"),
+// add query by cherry
+    @NamedQuery(name = "Tasks.findByStatus", query = "SELECT t FROM Tasks t WHERE t.status = :status"),
+    @NamedQuery(name = "Tasks.findByDependency", query = "SELECT t FROM Tasks t WHERE t.dependency = :dependency")
+})
 public class Tasks implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,7 +74,12 @@ public class Tasks implements Serializable {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-
+    // add by cherry
+    @Column(name = "status")
+    private String status;
+    @Column(name = "dependency")
+    private Integer dependency;
+            
     @ManyToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name="project_id")
     private Projects project;
@@ -180,6 +189,23 @@ public class Tasks implements Serializable {
     public Projects getProject() {
         return project;
     }
+    // add by cherry 
+    public String getStatus() {
+        return status;// only open and closed
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    public Integer getDependency() {
+        return dependency;
+    }
+
+    public void setDependency(Integer dependency) {
+        this.dependency = dependency;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
