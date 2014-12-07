@@ -210,7 +210,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Users[ id=" + id + " ]";
+        return email;
     }
 
     public String getColumnData(int i) throws Exception

@@ -239,7 +239,7 @@ public class Tasks implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Tasks[ id=" + id + " ]";
+        return "" + id + ": " + taskName;
     }
  
 //    public static void main(String[] args) {

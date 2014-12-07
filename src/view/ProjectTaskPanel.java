@@ -58,7 +58,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                     task.setStatus("closed");
                     task.setClosedAt(new Date());
                 } else {
-                    buttonClose.setText("close");
+                    buttonClose.setText("Close");
                     task.setStatus("open");
                 }
                 EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();

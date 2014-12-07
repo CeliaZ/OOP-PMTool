@@ -25,7 +25,7 @@ public class TasksTableModel extends AbstractTableModel {
     public TasksTableModel(String owner) {
         EntityManager em = ApplicationController.getEnitityManager();
         TypedQuery<Tasks> queryTasks = (TypedQuery<Tasks>) em.createNamedQuery("Tasks.findByProjectId");
-        Integer proId = 24; // TODO
+        Integer proId = ApplicationController.getCurrentProject().getId();
         tasks = queryTasks.setParameter("projectId", proId).getResultList();
         if (owner.length() > 0) {
             TypedQuery<Users> queryOwner = (TypedQuery<Users>) em.createNamedQuery("Users.findByFirstName");
