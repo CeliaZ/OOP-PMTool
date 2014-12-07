@@ -3,12 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/Cherry/NetBeansProjects/PMTool/DBSchema/dbschema.sql</file>
-            <file>file:/Users/Cherry/NetBeansProjects/PMTool/src/entity/Tasks.java</file>
-            <file>file:/Users/Cherry/NetBeansProjects/PMTool/src/view/MainAppFrame.java</file>
-            <file>file:/Users/Cherry/NetBeansProjects/PMTool/src/entity/Projects.java</file>
-            <file>file:/Users/Cherry/NetBeansProjects/PMTool/src/entity/Messages.java</file>
-            <file>file:/Users/Cherry/NetBeansProjects/PMTool/src/META-INF/persistence.xml</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/ManageTeamsPanel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/ProjectMainPanel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/ProjectManagerPanel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/CreateTasksPanel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/MainAppFrame.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/META-INF/persistence.xml</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/entity/ProjectsUsers.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/ProjectTaskPanel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/entity/ProjectsUsersPK.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/services/ProjectUsersService.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/services/UsersService.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/entity/Projects.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/entity/Messages.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/controller/TasksController.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/model/ProjectUsersModel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/ProjectInfoPanel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/view/CommunicationsPanel.java</file>
+            <file>file:/C:/Users/Shruti/Documents/NetBeansProjects/OOP-PMTool/src/controller/ProjectUsersController.java</file>
         </group>
     </open-files>
 </project-private>

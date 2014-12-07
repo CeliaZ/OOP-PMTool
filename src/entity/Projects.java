@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,6 +46,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Projects.findByCreatedAt", query = "SELECT p FROM Projects p WHERE p.createdAt = :createdAt"),
     @NamedQuery(name = "Projects.findByUpdatedAt", query = "SELECT p FROM Projects p WHERE p.updatedAt = :updatedAt")})
 public class Projects implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projects")
+    private Collection<ProjectsUsers> projectsUsersCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -162,6 +167,14 @@ public class Projects implements Serializable {
     public String toString() {
         return "entity.Projects[ id=" + id + " ]";
     }
-    
+
+    @XmlTransient
+    public Collection<ProjectsUsers> getProjectsUsersCollection() {
+        return projectsUsersCollection;
+    }
+
+    public void setProjectsUsersCollection(Collection<ProjectsUsers> projectsUsersCollection) {
+        this.projectsUsersCollection = projectsUsersCollection;
+    }
     
 }

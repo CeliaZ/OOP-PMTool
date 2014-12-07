@@ -9,10 +9,10 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Cherry
+ * @author Shruti
  */
 @Entity
 @Table(name = "projects_users")
@@ -30,24 +30,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ProjectsUsers.findAll", query = "SELECT p FROM ProjectsUsers p"),
     @NamedQuery(name = "ProjectsUsers.findById", query = "SELECT p FROM ProjectsUsers p WHERE p.id = :id"),
-    @NamedQuery(name = "ProjectsUsers.findByProjectId", query = "SELECT p FROM ProjectsUsers p WHERE p.projectId = :projectId"),
-    @NamedQuery(name = "ProjectsUsers.findByUserId", query = "SELECT p FROM ProjectsUsers p WHERE p.userId = :userId"),
+    @NamedQuery(name = "ProjectsUsers.findByProjectId", query = "SELECT p FROM ProjectsUsers p WHERE p.projectsUsersPK.projectId = :projectId"),
+    @NamedQuery(name = "ProjectsUsers.findByUserId", query = "SELECT p FROM ProjectsUsers p WHERE p.projectsUsersPK.userId = :userId"),
     @NamedQuery(name = "ProjectsUsers.findByRole", query = "SELECT p FROM ProjectsUsers p WHERE p.role = :role"),
     @NamedQuery(name = "ProjectsUsers.findByCreatedAt", query = "SELECT p FROM ProjectsUsers p WHERE p.createdAt = :createdAt"),
     @NamedQuery(name = "ProjectsUsers.findByUpdatedAt", query = "SELECT p FROM ProjectsUsers p WHERE p.updatedAt = :updatedAt")})
 public class ProjectsUsers implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EmbeddedId
+    protected ProjectsUsersPK projectsUsersPK;
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
-    @Basic(optional = false)
-    @Column(name = "project_id")
-    private int projectId;
-    @Basic(optional = false)
-    @Column(name = "user_id")
-    private int userId;
+    private int id;
     @Column(name = "role")
     private String role;
     @Column(name = "created_at")
@@ -56,42 +50,43 @@ public class ProjectsUsers implements Serializable {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+    @JoinColumn(name = "project_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Projects projects;
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Users users;
 
     public ProjectsUsers() {
     }
 
-    public ProjectsUsers(Integer id) {
+    public ProjectsUsers(ProjectsUsersPK projectsUsersPK) {
+        this.projectsUsersPK = projectsUsersPK;
+    }
+
+    public ProjectsUsers(ProjectsUsersPK projectsUsersPK, int id) {
+        this.projectsUsersPK = projectsUsersPK;
         this.id = id;
     }
 
-    public ProjectsUsers(Integer id, int projectId, int userId) {
-        this.id = id;
-        this.projectId = projectId;
-        this.userId = userId;
+    public ProjectsUsers(int projectId, int userId) {
+        this.projectsUsersPK = new ProjectsUsersPK(projectId, userId);
     }
 
-    public Integer getId() {
+    public ProjectsUsersPK getProjectsUsersPK() {
+        return projectsUsersPK;
+    }
+
+    public void setProjectsUsersPK(ProjectsUsersPK projectsUsersPK) {
+        this.projectsUsersPK = projectsUsersPK;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public int getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getRole() {
@@ -118,10 +113,26 @@ public class ProjectsUsers implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public Projects getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Projects projects) {
+        this.projects = projects;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (projectsUsersPK != null ? projectsUsersPK.hashCode() : 0);
         return hash;
     }
 
@@ -132,7 +143,7 @@ public class ProjectsUsers implements Serializable {
             return false;
         }
         ProjectsUsers other = (ProjectsUsers) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.projectsUsersPK == null && other.projectsUsersPK != null) || (this.projectsUsersPK != null && !this.projectsUsersPK.equals(other.projectsUsersPK))) {
             return false;
         }
         return true;
@@ -140,7 +151,70 @@ public class ProjectsUsers implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ProjectsUsers[ id=" + id + " ]";
+        return "entity.ProjectsUsers[ projectsUsersPK=" + projectsUsersPK + " ]";
     }
     
+    public String getColumnData(int i) throws Exception {
+		if (i == 0)
+			return ""+getId();
+		else if (i == 1)
+			return projectsUsersPK.getProjectId()+"";
+		else if (i == 2) 
+			return projectsUsersPK.getUserId()+"";
+		else if (i == 3)
+			return getRole();
+		else if (i == 4)
+			return getCreatedAt()+"";
+                else if (i==5)
+                        return getUpdatedAt()+"";
+                   
+			throw new Exception("Error: invalid column index in courselist table");    
+	}
+
+	// return the name of column i
+	public String getColumnName(int i) throws Exception {
+		String colName = null;
+		if (i == 0) 
+			colName = "id";
+		else if (i == 1)
+			colName = "project_id";
+		else if (i == 2)
+			colName = "user_id";
+		else if (i == 3)
+			colName = "role";
+		else if (i == 4)
+			colName = "created at";
+                else if (i==5)
+                        colName = "updated at";
+		else 
+			throw new Exception("Access to invalid column number in courselist table");
+
+		return colName;
+	}
+        // set data column i to value
+	public void setColumnData(int i, Object value) throws Exception {
+		if (i == 0) 
+			id =  (int)value;
+		else if (i == 1) 
+			projectsUsersPK.setProjectId((int) value);
+		else if (i == 2) 
+			projectsUsersPK.setUserId((int) value);
+		else if (i == 3)
+			role = (String) value;
+		else if (i == 4)
+			createdAt =  (Date) value;
+                else if (i==5)
+                        updatedAt = (Date) value;
+		else
+                    throw new Exception("Error: invalid column index in courselist table");    
+    	}
+        
+        
+        public int getNumberOfColumns() {
+            return 6;
+        }
+    
 }
+
+    
+

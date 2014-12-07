@@ -14,14 +14,19 @@ import javax.swing.JPanel;
 public class MainAppFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form MainAppFrame
+//     * Creates newrm MainAppFrame
      */
     public MainAppFrame() {
         initComponents();
 //        JPanel panel = new ProjectMainPanel();
-        JPanel panel = new CreateTasksPanel();
-        panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
-        this.add(panel);
+        //JPanel panel = new CreateTasksPanel();
+        //panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
+        //this.add(panel);
+        ProjectManagerPanel panel = new ProjectManagerPanel();
+        panel.setMainTabbedPane(jTabbedPane1);
+
+        jTabbedPane1.add("Home", panel);
+        
     }
 
     /**
@@ -33,17 +38,25 @@ public class MainAppFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 939, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1718, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -87,5 +100,6 @@ public class MainAppFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
