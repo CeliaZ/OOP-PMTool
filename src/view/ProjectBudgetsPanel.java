@@ -5,7 +5,16 @@
  */
 package view;
 
+import entity.Budgets;
 import entity.Projects;
+import entity.Tasks;
+import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+import javax.swing.JTable;
 import model.ProjectBudgetsModel;
 import services.ApplicationController;
 
@@ -16,16 +25,89 @@ import services.ApplicationController;
 public class ProjectBudgetsPanel extends javax.swing.JPanel {
 
     private ProjectBudgetsModel model;
+    private Projects project;
+    
     /**
      * Creates new form ProjectBudgetsPanel
      */
     public ProjectBudgetsPanel() {
         initComponents();
-        Projects p = ApplicationController.getCurrentProject();
-        labelProjectName.setText(p.getProjectName());
-        labelTotalBudget.setText(p.getBudget() != null ? "$" + p.getBudget() : "not specified");
-        model = new ProjectBudgetsModel(p);
+        project = ApplicationController.getCurrentProject();
+        labelProjectName.setText(project.getProjectName());
+        labelTotalBudget.setText(project.getBudget() != null ? "$" + project.getBudget() : "not specified");
+        model = new ProjectBudgetsModel(project);
         tableBudgets.setModel(model);
+        panelDetail.setVisible(false);
+        buttonAddBudget.addMouseListener(new MouseAdapter(){ 
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Budgets b = new Budgets();
+                b.setProjectId(project.getId());
+                b.setDescription("Unspecified budget");
+                b.setActual(0);
+                b.setProjected(0);
+                EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
+                transaction.begin();
+                ApplicationController.getEnitityManager().persist(b);
+                transaction.commit();
+                model = new ProjectBudgetsModel(project);
+                tableBudgets.setModel(model);
+                tableBudgets.setRowSelectionInterval(model.getRowCount() - 2, model.getRowCount() - 2);
+                rowPicked(model.getRowCount() - 2);
+            }
+        });
+        tableBudgets.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JTable target = (JTable)e.getSource();
+                int row = target.getSelectedRow();
+                rowPicked(row);
+            }
+        });
+        buttonSave.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                EntityManager em = ApplicationController.getEnitityManager();
+                TypedQuery<Budgets> query = (TypedQuery<Budgets>) em.createNamedQuery("Budgets.findById");
+                Budgets b = query.setParameter("id", Integer.parseInt(textBudgetID.getText())).getSingleResult();
+                b.setProjectId(project.getId());
+                b.setDescription(textEditDescription.getText());
+                b.setProjected(Integer.valueOf(textEditProjected.getText()));
+                b.setActual(Integer.valueOf(textEditActual.getText()));
+                EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
+                transaction.begin();
+                ApplicationController.getEnitityManager().persist(b);
+                transaction.commit();
+                model = new ProjectBudgetsModel(project);
+                tableBudgets.setModel(model);
+            }
+        });
+        buttonDelete.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                EntityManager em = ApplicationController.getEnitityManager();
+                TypedQuery<Budgets> query = (TypedQuery<Budgets>) em.createNamedQuery("Budgets.findById");
+                Budgets b = model.getBudgetAt(tableBudgets.getSelectedRow());
+                EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
+                transaction.begin();
+                ApplicationController.getEnitityManager().remove(b);
+                transaction.commit();
+                model = new ProjectBudgetsModel(project);
+                tableBudgets.setModel(model);
+            }
+        });
+    }
+    
+    public void rowPicked(int row) {
+        if (row >= model.getRowCount() - 1) {
+            return;
+        }
+        Budgets b = model.getBudgetAt(row);
+        textBudgetID.setText(b.getId().toString());
+        textEditProjected.setText(b.getProjected().toString());
+        textEditActual.setText(b.getActual().toString());
+        textEditDescription.setText(b.getDescription());
+        panelDetail.setVisible(true);
     }
 
     /**
@@ -37,6 +119,7 @@ public class ProjectBudgetsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToggleButton1 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         labelProjectName = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -44,6 +127,20 @@ public class ProjectBudgetsPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableBudgets = new javax.swing.JTable();
         buttonAddBudget = new javax.swing.JButton();
+        panelDetail = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        textEditProjected = new javax.swing.JTextField();
+        textEditActual = new javax.swing.JTextField();
+        buttonSave = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textEditDescription = new javax.swing.JTextArea();
+        textBudgetID = new javax.swing.JTextField();
+        buttonDelete = new javax.swing.JButton();
+
+        jToggleButton1.setText("jToggleButton1");
 
         jLabel1.setText("Project Name:");
 
@@ -63,30 +160,137 @@ public class ProjectBudgetsPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tableBudgets);
 
         buttonAddBudget.setText("New Budget");
+        buttonAddBudget.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddBudgetActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Projected:");
+
+        jLabel4.setText("Actual:");
+
+        jLabel5.setText("Description:");
+
+        textEditProjected.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textEditProjectedActionPerformed(evt);
+            }
+        });
+
+        buttonSave.setText("Save");
+        buttonSave.setToolTipText("");
+        buttonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Budget ID:");
+
+        textEditDescription.setColumns(20);
+        textEditDescription.setRows(5);
+        jScrollPane2.setViewportView(textEditDescription);
+
+        textBudgetID.setEditable(false);
+        textBudgetID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textBudgetIDActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelDetailLayout = new javax.swing.GroupLayout(panelDetail);
+        panelDetail.setLayout(panelDetailLayout);
+        panelDetailLayout.setHorizontalGroup(
+            panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDetailLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelDetailLayout.createSequentialGroup()
+                        .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelDetailLayout.createSequentialGroup()
+                                .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(21, 21, 21))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDetailLayout.createSequentialGroup()
+                                .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(buttonSave, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(18, 18, 18)))
+                        .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(textBudgetID, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(textEditActual, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                                    .addComponent(textEditProjected, javax.swing.GroupLayout.Alignment.LEADING))))))
+                .addContainerGap(570, Short.MAX_VALUE))
+        );
+        panelDetailLayout.setVerticalGroup(
+            panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDetailLayout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(textBudgetID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelDetailLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel4)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelDetailLayout.createSequentialGroup()
+                        .addComponent(textEditProjected, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textEditActual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelDetailLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonSave))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 41, Short.MAX_VALUE))))
+        );
+
+        buttonDelete.setForeground(java.awt.Color.red);
+        buttonDelete.setText("Delete");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelProjectName))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelTotalBudget)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(panelDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labelProjectName))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labelTotalBudget)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonAddBudget)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonDelete)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(buttonAddBudget)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,20 +305,57 @@ public class ProjectBudgetsPanel extends javax.swing.JPanel {
                     .addComponent(labelTotalBudget))
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonAddBudget)
+                    .addComponent(buttonDelete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonAddBudget)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addComponent(panelDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonAddBudgetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddBudgetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonAddBudgetActionPerformed
+
+    private void textEditProjectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textEditProjectedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textEditProjectedActionPerformed
+
+    private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonSaveActionPerformed
+
+    private void textBudgetIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textBudgetIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textBudgetIDActionPerformed
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAddBudget;
+    private javax.swing.JButton buttonDelete;
+    private javax.swing.JButton buttonSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel labelProjectName;
     private javax.swing.JLabel labelTotalBudget;
+    private javax.swing.JPanel panelDetail;
     private javax.swing.JTable tableBudgets;
+    private javax.swing.JTextField textBudgetID;
+    private javax.swing.JTextField textEditActual;
+    private javax.swing.JTextArea textEditDescription;
+    private javax.swing.JTextField textEditProjected;
     // End of variables declaration//GEN-END:variables
 }
