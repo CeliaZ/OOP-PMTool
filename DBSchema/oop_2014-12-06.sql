@@ -1,3 +1,5 @@
+CREATE database if not exists oop;
+use oop;
 # ************************************************************
 # Sequel Pro SQL dump
 # Version 4096
