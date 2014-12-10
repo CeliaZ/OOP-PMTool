@@ -5,50 +5,27 @@
  */
 package view;
 import entity.Tasks;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import services.ApplicationController;
 
 /**
- *
+ * Shruti??
  * @author Cherry
  */
-public class MainAppFrame extends JFrame {
+public class MainAppFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainAppFrame
-     */
-    private JPanel panel = new JPanel();
-    
-    //private JFrame mainFrame = new JFrame();
-    
-    public MainAppFrame(JPanel differentPanel) {
+    public MainAppFrame() {
         initComponents();
-//        System.out.println("main init");   
-//       JPanel panel = new ProjectMainPanel();
-//       JPanel panel = new CreateTasksPanel(); 
-        this.panel = differentPanel;
-        panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
-        panel.setLocation(0, 0);
-        this.add(panel);
-        ApplicationController.init(this);
+//        JPanel panel = new ProjectMainPanel();
+        //JPanel panel = new CreateTasksPanel();
+        //panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
+        //this.add(panel);
+        ProjectManagerPanel panel = new ProjectManagerPanel();
+        panel.setMainTabbedPane(jTabbedPane1);
+
+        jTabbedPane1.add("Home", panel);
+        
     }
 
-    public JPanel getCurrentPanel() {
-        return panel;
-    }
-    
-    public void switchPanel(JPanel newPanel) {
-        this.remove(panel);
-        newPanel.setSize(1024, 750);
-        this.add(newPanel);
-        this.panel = newPanel;
-        panel.setLocation(0, 30);
-        this.revalidate();
-        this.repaint();
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,18 +35,26 @@ public class MainAppFrame extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setSize(new java.awt.Dimension(1024, 768));
+        setPreferredSize(new java.awt.Dimension(1024, 768));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1024, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 768, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -87,8 +72,7 @@ public class MainAppFrame extends JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    //javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
@@ -102,15 +86,11 @@ public class MainAppFrame extends JFrame {
             java.util.logging.Logger.getLogger(MainAppFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //JPanel panel = new CreateTasksPanel();
-        ApplicationController.init();
-        //JPanel panel = new ProjectTaskPanel();
-        //JPanel panel = new ProjectMainPanel();
-  JPanel panel = new AdminPanel();
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainAppFrame(panel).setVisible(true);
+                new MainAppFrame().setVisible(true);
             }
         });
         
@@ -118,6 +98,6 @@ public class MainAppFrame extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
-
 }

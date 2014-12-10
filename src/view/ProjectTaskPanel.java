@@ -204,7 +204,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         MainAppFrame jf = ApplicationController.getMainFrame();
         JPanel newP = new CreateTasksPanel();
         newP.setSize(1024, 700);
-        jf.switchPanel(newP);
+       // jf.switchPanel(newP);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed

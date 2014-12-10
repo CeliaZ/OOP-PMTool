@@ -271,7 +271,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         JTabbedPane tp = newP.getJTabbedPane();
         tp.setSelectedIndex(1);// go to task panel
 
-        jf.switchPanel(newP);
+      //  jf.switchPanel(newP);
         
 //        remove(firstPanel);
 //        add(secondPanel);
@@ -290,7 +290,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         ProjectMainPanel newP = new ProjectMainPanel();
         JTabbedPane tp = newP.getJTabbedPane();
         tp.setSelectedIndex(1);// go to task panel
-        jf.switchPanel(newP);
+        //jf.switchPanel(newP);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
 

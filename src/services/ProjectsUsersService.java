@@ -6,9 +6,12 @@
 package services;
 
 import entity.ProjectsUsers;
+import entity.ProjectsUsersPK;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -60,6 +63,18 @@ public class ProjectsUsersService {
 //        return newUser;
         return null;
     }
+      public ProjectsUsers createProjectsUsers(int id, int projectId, int userId, String role) {
+    	ProjectsUsers pu = new ProjectsUsers();
+        ProjectsUsersPK puPK = new ProjectsUsersPK();
+        pu.setId(id);
+//            pu.setCreatedAt(createdAt);
+//            pu.setUpdatedAt(updatedAt);
+        pu.setRole(role);
+        puPK.setProjectId(projectId);
+        puPK.setUserId(userId);
+        pu.setProjectsUsersPK(puPK);
+        return pu;
+     }
 
     public void deleteRow(String email) 
     {
@@ -81,6 +96,30 @@ public class ProjectsUsersService {
         manager.remove(users);
        }
     }
+    
+       // method to delete a record
+    public void deleteProjectsUsers(ProjectsUsersPK puPK) {
+        ProjectsUsers pu = manager.find(ProjectsUsers.class, puPK);
+    	 if (puPK != null) {
+    		 manager.remove(pu);
+    	 }
+    }
+    
+      // method to update a record
+     public ProjectsUsers updateUserInfo(ProjectsUsersPK puPK, int id, String role, Date createdAt, Date updatedAt) {
+    	 ProjectsUsers pu = manager.find(ProjectsUsers.class, puPK);
+    	 if (puPK != null) {
+    	    pu.setId(id);
+            pu.setCreatedAt(createdAt);
+            pu.setUpdatedAt(updatedAt);
+            pu.setRole(role);
+            pu.setProjectsUsersPK(puPK);
+                    
+    	 }
+    	 return pu;
+     }
+    
+    
     public List<ProjectsUsers> readAll() 
     {
         //TypedQuery<ProjectsUsers> query = manager.createQuery("SELECT T FROM " +ProjectsUsers.class.getName()+" T", ProjectsUsers.class); 
@@ -113,6 +152,20 @@ public class ProjectsUsersService {
         }
         return data;
     }
+    // method to read a record
+     public ProjectsUsers readProjectsUsers(ProjectsUsersPK puPK) {
+         ProjectsUsers pu = manager.find(ProjectsUsers.class, puPK);return pu;
+     }
+
+     public List<ProjectsUsers> readProjectsUsers(int projectId) {
+         //TypedQuery<ProjectsUsers> query = manager.createQuery("SELECT e FROM ProjectsUsers e where e.projectId =:arg1 ", ProjectsUsers.class);
+         Query query = manager.createNamedQuery("ProjectsUsers.findByProjectId");
+         query.setParameter("projectId", projectId);
+         List<ProjectsUsers> result =  query.getResultList();
+    	 return result;    
+     }
+     
+ 
     
     
     public static void main(String[] args) {

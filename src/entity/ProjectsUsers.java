@@ -153,5 +153,64 @@ public class ProjectsUsers implements Serializable {
     public String toString() {
         return "entity.ProjectsUsers[ projectsUsersPK=" + projectsUsersPK + " ]";
     }
+     public String getColumnData(int i) throws Exception {
+		if (i == 0)
+			return ""+getId();
+		else if (i == 1)
+			return projectsUsersPK.getProjectId()+"";
+		else if (i == 2) 
+			return projectsUsersPK.getUserId()+"";
+		else if (i == 3)
+			return getRole();
+		else if (i == 4)
+			return getCreatedAt()+"";
+                else if (i==5)
+                        return getUpdatedAt()+"";
+                   
+			throw new Exception("Error: invalid column index in courselist table");    
+	}
+
+	// return the name of column i
+	public String getColumnName(int i) throws Exception {
+		String colName = null;
+		if (i == 0) 
+			colName = "id";
+		else if (i == 1)
+			colName = "project_id";
+		else if (i == 2)
+			colName = "user_id";
+		else if (i == 3)
+			colName = "role";
+		else if (i == 4)
+			colName = "created at";
+                else if (i==5)
+                        colName = "updated at";
+		else 
+			throw new Exception("Access to invalid column number in courselist table");
+
+		return colName;
+	}
+        // set data column i to value
+	public void setColumnData(int i, Object value) throws Exception {
+		if (i == 0) 
+			id =  (int)value;
+		else if (i == 1) 
+			projectsUsersPK.setProjectId((int) value);
+		else if (i == 2) 
+			projectsUsersPK.setUserId((int) value);
+		else if (i == 3)
+			role = (String) value;
+		else if (i == 4)
+			createdAt =  (Date) value;
+                else if (i==5)
+                        updatedAt = (Date) value;
+		else
+                    throw new Exception("Error: invalid column index in courselist table");    
+    	}
+        
+        
+        public int getNumberOfColumns() {
+            return 6;
+        }
     
 }
