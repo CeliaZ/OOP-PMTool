@@ -16,6 +16,7 @@ public class MainAppFrame extends javax.swing.JFrame {
 
     public MainAppFrame() {
         initComponents();
+        //hello
 //        JPanel panel = new ProjectMainPanel();
         //JPanel panel = new CreateTasksPanel();
         //panel.setSize(this.getWidth() - 20, this.getHeight() - 20);
