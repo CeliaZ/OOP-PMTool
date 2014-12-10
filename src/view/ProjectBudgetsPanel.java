@@ -56,14 +56,6 @@ public class ProjectBudgetsPanel extends javax.swing.JPanel {
                 rowPicked(model.getRowCount() - 2);
             }
         });
-        tableBudgets.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JTable target = (JTable)e.getSource();
-                int row = target.getSelectedRow();
-                rowPicked(row);
-            }
-        });
         buttonSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -80,6 +72,14 @@ public class ProjectBudgetsPanel extends javax.swing.JPanel {
                 transaction.commit();
                 model = new ProjectBudgetsModel(project);
                 tableBudgets.setModel(model);
+            }
+        });
+        tableBudgets.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JTable target = (JTable)e.getSource();
+                int row = target.getSelectedRow();
+                rowPicked(row);
             }
         });
         buttonDelete.addMouseListener(new MouseAdapter() {

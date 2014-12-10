@@ -41,21 +41,7 @@ public class TimelinePanel extends javax.swing.JPanel {
             + " <title></title> <meta charset=\"utf-8\">"
             + " <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">"
             + " <meta name=\"apple-touch-fullscreen\" content=\"yes\">"
-            + " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\">"
-            + "<style> html, body { height:100%; padding: 0px; margin: 0px; } </style> "
-            + "</head>"
-            + " <body> <div id=\"timeline-embed\"></div>"
-            + " <script type=\"text/javascript\"> "
-            + "var data = %%%; "
-            + "var timeline_config = { "
-            + "width: \"100%\", "
-            + "height: \"90%\", "
-            + "source: data, "
-            + "start_zoom_adjust: \"-1\", "
-            + "lang: \"en\", "
-            + "font: \"Verdana\" } </script>"
-            + " <script type=\"text/javascript\" src=\"build/js/storyjs-embed.js\"></script>"
-            + "</body> </html>";
+            + " </html>";
     /**
      * Creates new form TimelinePanel
      */
@@ -68,16 +54,6 @@ public class TimelinePanel extends javax.swing.JPanel {
         setLayout(new BorderLayout(0, 0));
         add(fxPanel);
 
-        String filepath = System.getProperty("user.dir") + "/timeline/index.html";
-        final String url = "file://" + filepath;
-        try {
-            FileWriter writer = new FileWriter(filepath);
-            writer.write(TEMPLATE.replace("%%%", getJsonConfig()));
-            writer.close();
-        } catch (Exception e) {
-            System.err.println("Error writing html " + e.getMessage());
-        }
-        
         Platform.runLater(new Runnable() { // this will run initFX as JavaFX-Thread
             @Override
             public void run() {
@@ -92,7 +68,7 @@ public class TimelinePanel extends javax.swing.JPanel {
                 webView.setMaxSize(size.getWidth(), size.getHeight());
 
                 WebEngine webEngine = webView.getEngine();
-                webEngine.load(url);
+                webEngine.load("http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0Ag1_iE674IuvdEFaZi0wOVBFY2l2OHdPUWlrZEMwaHc&font=Bevan-PotanoSans&maptype=toner&lang=en");
             }
         });
     }
@@ -102,31 +78,7 @@ public class TimelinePanel extends javax.swing.JPanel {
         TypedQuery<Tasks> queryTasks = (TypedQuery<Tasks>) em.createNamedQuery("Tasks.findByProjectId");
         Integer proId = ApplicationController.getCurrentProject().getId();
         List<Tasks> tasks = queryTasks.setParameter("projectId", proId).getResultList();
-        JSONArray dates = new JSONArray();
-        SimpleDateFormat format = new SimpleDateFormat("YYYY,MM,dd");
-        for (Tasks t : tasks) {
-            if (t.getStartTime() == null || t.getEndTime() == null) {
-                continue;
-            }
-            TypedQuery<Users> queryOwner = (TypedQuery<Users>) em.createNamedQuery("Users.findById");
-            Users u = queryOwner.setParameter("id", t.getOwnerId()).getSingleResult();
-            if (u == null) {
-                continue;
-            }
-            JSONObject entry = new JSONObject();
-            entry.put("startDate", format.format(t.getStartTime()).toString());
-            entry.put("endDate", format.format(t.getEndTime()).toString());
-            entry.put("headline", t.getTaskName());
-            entry.put("text", t.getDescription());
-            dates.add(entry);
-        }
-        JSONObject timeline = new JSONObject();
-        timeline.put("headline", "Project Timeline");
-        timeline.put("type", "default");
-        timeline.put("date", dates);
-        JSONObject result = new JSONObject();
-        result.put("timeline", timeline);
-        return result.toJSONString();
+        return tasks.get(0).getTaskName();
     }
 
     /* Creates a WebView and fires up google.com */
