@@ -216,8 +216,8 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
         
         // adding a CreateTasks panel here
         
-        CreateTasksPanel panel = new CreateTasksPanel();
-       jTabbedPane.add("Create Task", panel);
+        ProjectTaskPanel panel = new ProjectTaskPanel();
+       jTabbedPane.add("Task List", panel);
     }//GEN-LAST:event_jButton8ActionPerformed
 
 
