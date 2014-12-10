@@ -207,7 +207,7 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         //adding a timeline panel here
         TimelinePanel panel = new TimelinePanel();
-        jTabbedPane.add(panel);
+        jTabbedPane.add("Timeline", panel);
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -217,7 +217,7 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
         // adding a CreateTasks panel here
         
         CreateTasksPanel panel = new CreateTasksPanel();
-       jTabbedPane.add(panel);
+       jTabbedPane.add("Create Task", panel);
     }//GEN-LAST:event_jButton8ActionPerformed
 
 

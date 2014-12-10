@@ -6,6 +6,7 @@
 package view;
 import entity.Tasks;
 import javax.swing.JPanel;
+import services.ApplicationController;
 
 /**
  * Shruti??
@@ -23,6 +24,7 @@ public class MainAppFrame extends javax.swing.JFrame {
         panel.setMainTabbedPane(jTabbedPane1);
 
         jTabbedPane1.add("Home", panel);
+        ApplicationController.init();
         
     }
 
