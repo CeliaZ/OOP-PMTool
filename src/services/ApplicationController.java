@@ -7,6 +7,7 @@ package services;
 
 import entity.Projects;
 import entity.Tasks;
+import entity.Users;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -23,6 +24,7 @@ public class ApplicationController {
     private static ProjectManagerPanel mainPanel;
     private static EntityManager entityManager;
     private static Projects currentProject;
+    private static Users currentUser;
     
     public static MainAppFrame getMainFrame () {      
         return mainFrame;
@@ -40,6 +42,7 @@ public class ApplicationController {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PMToolPU");
         entityManager = emf.createEntityManager();
         switchCurrentProject(24); // TODO
+        setCurrentUser(1); // TODO
     }
     
     public static void init(MainAppFrame frame) { 
@@ -53,6 +56,15 @@ public class ApplicationController {
     
     public static Projects getCurrentProject() {
         return currentProject;
+    }
+    
+    public static Users getCurrentUser() {
+        return currentUser;
+    }
+    
+    public static void setCurrentUser(Integer id) {
+        TypedQuery<Users> query = (TypedQuery<Users>) entityManager.createNamedQuery("Users.findById");
+        currentUser = query.setParameter("id", id).getSingleResult();
     }
     
     public static void switchCurrentProject(int projectId) {

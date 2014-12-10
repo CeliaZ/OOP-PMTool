@@ -5,6 +5,7 @@
  */
 package view;
 
+import entity.Messages;
 import entity.Tasks;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
@@ -53,20 +54,31 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 int row = taskList.getSelectedRow();
                 Tasks task = model.getTaskAt(row);
+                Messages message = new Messages();
+                message.setSenderId(ApplicationController.getCurrentUser().getId());
+                message.setTaskId(task.getId());
+                message.setCreatedAt(new java.util.Date());
                 if (buttonClose.getText().toLowerCase().equals("close")) {
                     buttonClose.setText("reopen");
                     task.setStatus("closed");
                     task.setClosedAt(new Date());
+                    message.setContent("closed the task.");
                 } else {
                     buttonClose.setText("Close");
                     task.setStatus("open");
+                    message.setContent("reopened the task.");
                 }
                 EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
                 transaction.begin();
+                ApplicationController.getEnitityManager().persist(message);
                 ApplicationController.getEnitityManager().persist(task);
                 transaction.commit();
                 model.fireTableDataChanged();
                 taskList.setRowSelectionInterval(row, row);
+                ProjectTaskDetailPanel panel = new ProjectTaskDetailPanel(task);
+                panel.setSize(detailPanel.getSize());
+                detailPanel.removeAll();
+                detailPanel.add(panel, BorderLayout.CENTER);
             }
         });
     }

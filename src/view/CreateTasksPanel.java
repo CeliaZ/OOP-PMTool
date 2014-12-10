@@ -237,10 +237,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
 
         EntityManager em = ApplicationController.getEnitityManager();
-//        System.out.println(em);
-        //TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
         TypedQuery<Projects> queryProById = (TypedQuery<Projects>) em.createNamedQuery("Projects.findById");
-        //Query queryProById = em.createNamedQuery("findById");
         Integer proId = ApplicationController.getCurrentProject().getId();
         Projects project1 = queryProById.setParameter("id", proId).getSingleResult();
         
@@ -289,10 +286,14 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         transaction.commit();
 
         Messages message = new Messages();
-        message.setSenderId(14); // TODO change to user id
+        message.setSenderId(ApplicationController.getCurrentUser().getId()); // TODO change to user id
         message.setProjectId(proId);
         message.setTaskId(task.getId());
-        message.setContent("created this task.");
+        if (task == null) {
+            message.setContent("created this task.");
+        } else {
+            message.setContent("edited this task.");
+        }
         message.setCreatedAt(new java.util.Date());
         transaction.begin();
         ApplicationController.getEnitityManager().persist(message);
