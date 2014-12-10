@@ -9,7 +9,7 @@ import entity.Messages;
 import entity.Projects;
 import entity.Tasks;
 import entity.Users;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -29,9 +29,14 @@ public class CreateTasksPanel extends javax.swing.JPanel {
     
     private Tasks task;
     
-    public CreateTasksPanel() {
+    public CreateTasksPanel(Tasks task) {
         initComponents();
+        this.task = task;
         initDataComponents();
+    }
+    
+    public CreateTasksPanel() {
+        this(null);
     }
     
     private void initDataComponents() {
@@ -40,12 +45,35 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         List<Users> result = query.getResultList();
         for (Users u : result) {
             comboOwner.addItem(u);
+            if (task != null && task.getOwnerId().equals(u.getId())) {
+                comboOwner.setSelectedItem(u);
+            }
         }
         TypedQuery<Tasks> queryTasks = (TypedQuery<Tasks>) em.createNamedQuery("Tasks.findByProjectId");
         Integer proId = ApplicationController.getCurrentProject().getId();
         List<Tasks> tasks = queryTasks.setParameter("projectId", proId).getResultList();
         for (Tasks t : tasks) {
             comboTasks.addItem(t);
+            if (task != null && task.getDependency().equals(t.getId())) {
+                comboTasks.setSelectedItem(task);
+            }
+        }
+        
+        if (task != null) {
+            textTaskName.setText(task.getTaskName());
+            textDescription.setText(task.getDescription());
+            Date startTime = task.getStartTime();
+            if (startTime != null) {
+                textStartDay.setText("" + startTime.getDate());
+                textStartMonth.setText("" + (startTime.getMonth() + 1));
+                textStartYear.setText("" + (startTime.getYear() + 1900));
+            }
+            Date endTime = task.getEndTime();
+            if (endTime != null) {
+                textFinishedDay.setText("" + endTime.getDate());
+                textFinishedMonth.setText("" + (endTime.getMonth() + 1));
+                textFinishedYear.setText("" + (endTime.getYear() + 1900));
+            }
         }
     }
     /**
@@ -66,17 +94,17 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         textDescription = new javax.swing.JTextArea();
         comboTasks = new javax.swing.JComboBox();
-        jTextField4 = new javax.swing.JTextField();
+        textFinishedDay = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        textFinishedMonth = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        textFinishedYear = new javax.swing.JTextField();
         buttonSave = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        textStartDay = new javax.swing.JTextField();
+        textStartMonth = new javax.swing.JTextField();
+        textStartYear = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -97,9 +125,9 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         add(jLabel3);
         jLabel3.setBounds(28, 272, 115, 16);
 
-        jLabel5.setText("Finished Time:");
+        jLabel5.setText("Deadline:");
         add(jLabel5);
-        jLabel5.setBounds(28, 365, 92, 16);
+        jLabel5.setBounds(28, 365, 59, 16);
 
         jLabel6.setText("Description");
         add(jLabel6);
@@ -111,7 +139,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
             }
         });
         add(textTaskName);
-        textTaskName.setBounds(180, 47, 244, 28);
+        textTaskName.setBounds(180, 47, 250, 28);
 
         textDescription.setColumns(20);
         textDescription.setRows(5);
@@ -128,24 +156,24 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         });
         add(comboTasks);
         comboTasks.setBounds(172, 272, 180, 27);
-        add(jTextField4);
-        jTextField4.setBounds(205, 359, 75, 28);
+        add(textFinishedDay);
+        textFinishedDay.setBounds(330, 360, 70, 28);
 
         jLabel8.setText("Day");
         add(jLabel8);
-        jLabel8.setBounds(175, 365, 24, 16);
+        jLabel8.setBounds(300, 370, 24, 16);
 
         jLabel9.setText("Month");
         add(jLabel9);
-        jLabel9.setBounds(286, 365, 40, 16);
-        add(jTextField5);
-        jTextField5.setBounds(332, 359, 81, 28);
+        jLabel9.setBounds(170, 370, 40, 16);
+        add(textFinishedMonth);
+        textFinishedMonth.setBounds(220, 360, 70, 28);
 
         jLabel10.setText("Year");
         add(jLabel10);
         jLabel10.setBounds(419, 365, 27, 16);
-        add(jTextField6);
-        jTextField6.setBounds(452, 359, 91, 28);
+        add(textFinishedYear);
+        textFinishedYear.setBounds(452, 359, 91, 28);
 
         buttonSave.setText("Save");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
@@ -160,25 +188,25 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         add(jLabel11);
         jLabel11.setBounds(28, 323, 68, 16);
 
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        textStartDay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                textStartDayActionPerformed(evt);
             }
         });
-        add(jTextField7);
-        jTextField7.setBounds(205, 311, 75, 28);
-        add(jTextField8);
-        jTextField8.setBounds(332, 311, 81, 28);
-        add(jTextField9);
-        jTextField9.setBounds(452, 311, 91, 28);
+        add(textStartDay);
+        textStartDay.setBounds(330, 310, 70, 28);
+        add(textStartMonth);
+        textStartMonth.setBounds(220, 310, 70, 28);
+        add(textStartYear);
+        textStartYear.setBounds(452, 311, 91, 28);
 
         jLabel12.setText("Day");
         add(jLabel12);
-        jLabel12.setBounds(175, 317, 24, 16);
+        jLabel12.setBounds(300, 320, 24, 16);
 
         jLabel13.setText("Month");
         add(jLabel13);
-        jLabel13.setBounds(286, 317, 40, 16);
+        jLabel13.setBounds(170, 320, 40, 16);
 
         jLabel14.setText("Year");
         add(jLabel14);
@@ -203,9 +231,8 @@ public class CreateTasksPanel extends javax.swing.JPanel {
 
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
 
-        String[] array = new String[4];
-        array[0] = textTaskName.getText();
-        array[1] = textDescription.getText();
+        String name = textTaskName.getText();
+        String desc = textDescription.getText();
         
         EntityTransaction transaction = ApplicationController.getEnitityManager().getTransaction();
 
@@ -217,31 +244,39 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         Integer proId = ApplicationController.getCurrentProject().getId();
         Projects project1 = queryProById.setParameter("id", proId).getSingleResult();
         
-        Date st = null;
-        Date et = null;
+        java.sql.Date st = null;
+        java.sql.Date et = null;
         
-        if (jTextField9.getText().length() > 0) {
+        if (textStartYear.getText().length() > 0) {
             StringBuilder sb = new StringBuilder();
-            sb.append(jTextField9.getText());
+            sb.append(textStartYear.getText());
             sb.append("-");
-            sb.append(jTextField8.getText());
+            sb.append(textStartMonth.getText());
             sb.append("-");
-            sb.append(jTextField7.getText());
-            st = Date.valueOf(sb.toString());
+            sb.append(textStartDay.getText());
+            st = java.sql.Date.valueOf(sb.toString());
         }
         
-        if (jTextField6.getText().length() > 0) {
+        if (textFinishedYear.getText().length() > 0) {
             StringBuilder sb2 = new StringBuilder();
-            sb2.append(jTextField6.getText());
+            sb2.append(textFinishedYear.getText());
             sb2.append("-");
-            sb2.append(jTextField5.getText());
+            sb2.append(textFinishedMonth.getText());
             sb2.append("-");
-            sb2.append(jTextField4.getText());
-            et = Date.valueOf(sb2.toString());
+            sb2.append(textFinishedDay.getText());
+            et = java.sql.Date.valueOf(sb2.toString());
         }
 
         Users owner = (Users) comboOwner.getSelectedItem();
-        Tasks task = new Tasks(array[0], array[1], owner.getId(), st, et);
+        if (task == null) {
+            task = new Tasks(name, desc, owner.getId(), st, et);
+        } else {
+            task.setTaskName(name);
+            task.setDescription(desc);
+            task.setOwnerId(owner.getId());
+            task.setStartTime(st);
+            task.setEndTime(et);
+        }
         project1.getTasks().add(task);
         task.setProjectId(project1.getId());
         task.setProject(project1);
@@ -277,9 +312,9 @@ public class CreateTasksPanel extends javax.swing.JPanel {
 //        add(secondPanel);
     }//GEN-LAST:event_buttonSaveActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void textStartDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textStartDayActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_textStartDayActionPerformed
 
     private void comboTasksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTasksActionPerformed
         // TODO add your handling code here:
@@ -312,13 +347,13 @@ public class CreateTasksPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTextArea textDescription;
+    private javax.swing.JTextField textFinishedDay;
+    private javax.swing.JTextField textFinishedMonth;
+    private javax.swing.JTextField textFinishedYear;
+    private javax.swing.JTextField textStartDay;
+    private javax.swing.JTextField textStartMonth;
+    private javax.swing.JTextField textStartYear;
     private javax.swing.JTextField textTaskName;
     // End of variables declaration//GEN-END:variables
 }
