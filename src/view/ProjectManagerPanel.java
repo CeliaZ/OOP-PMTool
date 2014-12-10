@@ -181,14 +181,14 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
         // clicking this will create a new tab in the JtabbedPane (parent pane)
         CommunicationsPanel panel = new CommunicationsPanel();
         panel.setMainTabbedPane(jTabbedPane);
-        jTabbedPane.add("Communications ", panel);
+        addAndSwitch("Communications ", panel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         // Lets create a new tab for manage team 
         ManageTeamsPanel panel = new ManageTeamsPanel();
-        jTabbedPane.add("Manage Teams", panel);
+        addAndSwitch("Manage Teams", panel);
         
         
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -202,7 +202,7 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         ProjectBudgetsPanel panel = new ProjectBudgetsPanel();
-        jTabbedPane.add("Manage Budget",panel);
+        addAndSwitch("Manage Budget",panel);
         // on clicking this the budget panel should be aaded to the jtabbed pane
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -210,7 +210,7 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         //adding a timeline panel here
         TimelinePanel panel = new TimelinePanel();
-        jTabbedPane.add("Timeline", panel);
+        addAndSwitch("Timeline", panel);
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
