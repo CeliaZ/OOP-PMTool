@@ -29,7 +29,7 @@ public class TasksTableModel extends AbstractTableModel {
         tasks = queryTasks.setParameter("projectId", proId).getResultList();
         if (owner.length() > 0) {
             TypedQuery<Users> queryOwner = (TypedQuery<Users>) em.createNamedQuery("Users.findByFirstName");
-            Users user = queryOwner.setParameter("firstName", owner).getSingleResult();
+            Users user = queryOwner.setParameter("firstName", owner).getResultList().get(0);
             if (user != null) {
                 System.out.println(user);
                 Iterator<Tasks> iter = tasks.iterator();

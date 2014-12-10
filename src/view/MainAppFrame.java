@@ -99,7 +99,7 @@ public class MainAppFrame extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(687, Short.MAX_VALUE))
+                .addContainerGap(686, Short.MAX_VALUE))
         );
 
         pack();

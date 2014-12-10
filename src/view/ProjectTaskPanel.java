@@ -111,6 +111,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         buttonClose = new javax.swing.JButton();
+        buttonEdit = new javax.swing.JButton();
         buttonClear = new javax.swing.JButton();
         textSearchOwner = new javax.swing.JTextField();
         buttonSearch = new javax.swing.JButton();
@@ -140,6 +141,13 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
             }
         });
 
+        buttonEdit.setText("Edit");
+        buttonEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -148,12 +156,16 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                 .addComponent(jButton1)
                 .addGap(0, 0, 0)
                 .addComponent(buttonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(309, 309, 309))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jButton1)
-            .addComponent(buttonClose)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(buttonClose)
+                .addComponent(buttonEdit))
         );
 
         buttonClear.setText("Clear");
@@ -211,11 +223,24 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonCloseActionPerformed
 
+    private void buttonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditActionPerformed
+        int row = taskList.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
+        Tasks task = model.getTaskAt(row);
+        MainAppFrame jf = ApplicationController.getMainFrame();
+        JPanel newP = new CreateTasksPanel(task);
+        newP.setSize(1024, 700);
+        jf.switchPanel(newP);
+    }//GEN-LAST:event_buttonEditActionPerformed
+
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonClear;
     private javax.swing.JButton buttonClose;
+    private javax.swing.JButton buttonEdit;
     private javax.swing.JButton buttonSearch;
     private javax.swing.JPanel detailPanel;
     private javax.swing.JButton jButton1;
