@@ -232,7 +232,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         MainAppFrame jf = ApplicationController.getMainFrame();
         JPanel newP = new CreateTasksPanel(task);
         newP.setSize(1024, 700);
-        jf.switchPanel(newP);
+        //jf.switchPanel(newP);
     }//GEN-LAST:event_buttonEditActionPerformed
 
     
