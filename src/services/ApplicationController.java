@@ -12,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import view.MainAppFrame;
+import view.ProjectManagerPanel;
 
 /**
  *
@@ -19,11 +20,20 @@ import view.MainAppFrame;
  */
 public class ApplicationController {
     private static MainAppFrame mainFrame;
+    private static ProjectManagerPanel mainPanel;
     private static EntityManager entityManager;
     private static Projects currentProject;
     
     public static MainAppFrame getMainFrame () {      
         return mainFrame;
+    }
+    
+    public static void setMainPanel(ProjectManagerPanel panel) {
+        mainPanel = panel;
+    }
+    
+    public static ProjectManagerPanel getMainPanel() {
+        return mainPanel;
     }
     
     public static void init(){

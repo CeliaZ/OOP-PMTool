@@ -54,7 +54,7 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         List<Tasks> tasks = queryTasks.setParameter("projectId", proId).getResultList();
         for (Tasks t : tasks) {
             comboTasks.addItem(t);
-            if (task != null && task.getDependency().equals(t.getId())) {
+            if (task != null && task.getDependency() != null && task.getDependency().equals(t.getId())) {
                 comboTasks.setSelectedItem(task);
             }
         }
@@ -298,18 +298,8 @@ public class CreateTasksPanel extends javax.swing.JPanel {
         ApplicationController.getEnitityManager().persist(message);
         transaction.commit();
        
-//emf.close();
-        MainAppFrame jf = ApplicationController.getMainFrame();
-
-        //JPanel newP = new ProjectTaskPanel();
-        ProjectMainPanel newP = new ProjectMainPanel();
-        JTabbedPane tp = newP.getJTabbedPane();
-        tp.setSelectedIndex(1);// go to task panel
-
-      //  jf.switchPanel(newP);
-        
-//        remove(firstPanel);
-//        add(secondPanel);
+        ProjectManagerPanel mp = ApplicationController.getMainPanel();
+        mp.closeActivePanel();
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void textStartDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textStartDayActionPerformed
@@ -321,11 +311,8 @@ public class CreateTasksPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_comboTasksActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        MainAppFrame jf = ApplicationController.getMainFrame();
-        ProjectMainPanel newP = new ProjectMainPanel();
-        JTabbedPane tp = newP.getJTabbedPane();
-        tp.setSelectedIndex(1);// go to task panel
-        //jf.switchPanel(newP);
+        ProjectManagerPanel mp = ApplicationController.getMainPanel();
+        mp.closeActivePanel();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
 

@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import services.ApplicationController;
 
 /**
  *
@@ -26,6 +28,7 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
      */
     public ProjectManagerPanel() {
         initComponents();
+        ApplicationController.setMainPanel(this);
         
 //        this.setLayout(new FlowLayout(FlowLayout.CENTER));
 //        this.removeAll();
@@ -217,9 +220,17 @@ public class ProjectManagerPanel extends javax.swing.JPanel {
         // adding a CreateTasks panel here
         
         ProjectTaskPanel panel = new ProjectTaskPanel();
-       jTabbedPane.add("Task List", panel);
+        addAndSwitch("Task List", panel);
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    public void addAndSwitch(String name, JPanel panel) {
+       jTabbedPane.add(name, panel);
+       jTabbedPane.setSelectedComponent(panel);
+    }
+    
+    public void closeActivePanel() {
+        jTabbedPane.remove(jTabbedPane.getSelectedComponent());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

@@ -53,7 +53,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 int row = taskList.getSelectedRow();
                 Tasks task = model.getTaskAt(row);
-                if (buttonClose.getText().equals("close")) {
+                if (buttonClose.getText().toLowerCase().equals("close")) {
                     buttonClose.setText("reopen");
                     task.setStatus("closed");
                     task.setClosedAt(new Date());
@@ -88,9 +88,9 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                 detailPanel.add(panel, BorderLayout.CENTER);
                 buttonClose.setEnabled(true);
                 if ("closed".equals(task.getStatus())) {
-                    buttonClose.setText("reopen");
+                    buttonClose.setText("Reopen");
                 } else {
-                    buttonClose.setText("close");
+                    buttonClose.setText("Close");
                 }
                 panel.revalidate();
             }
@@ -120,7 +120,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         detailPanel.setLayout(detailPanelLayout);
         detailPanelLayout.setHorizontalGroup(
             detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 983, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         detailPanelLayout.setVerticalGroup(
             detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,9 +180,7 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(detailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(textSearchOwner, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,7 +189,10 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(buttonClear, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(tasksPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 983, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(131, 131, 131))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,10 +214,10 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         // switch to createtaskPanel
-        MainAppFrame jf = ApplicationController.getMainFrame();
+        ProjectManagerPanel mp = ApplicationController.getMainPanel();
         JPanel newP = new CreateTasksPanel();
         newP.setSize(1024, 700);
-       // jf.switchPanel(newP);
+        mp.addAndSwitch("Create Task", newP);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
@@ -228,11 +229,11 @@ public class ProjectTaskPanel extends javax.swing.JPanel {
         if (row < 0) {
             return;
         }
+        ProjectManagerPanel mp = ApplicationController.getMainPanel();
         Tasks task = model.getTaskAt(row);
-        MainAppFrame jf = ApplicationController.getMainFrame();
         JPanel newP = new CreateTasksPanel(task);
         newP.setSize(1024, 700);
-        //jf.switchPanel(newP);
+        mp.addAndSwitch("Edit Task", newP);
     }//GEN-LAST:event_buttonEditActionPerformed
 
     
